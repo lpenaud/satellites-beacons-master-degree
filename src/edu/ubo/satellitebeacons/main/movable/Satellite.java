@@ -1,26 +1,9 @@
 package edu.ubo.satellitebeacons.main.movable;
 
-import edu.ubo.satellitebeacons.main.world.Position;
-import edu.ubo.satellitebeacons.main.world.World;
+public class Satellite extends Movable {
 
-public class Satellite implements Movable {
-
-  public Satellite(final World world, final Position position) {
-    this.world = world;
+  public Satellite(final Position position) {
     this.position = position;
   }
-
-  @Override
-  public Position getPosition() {
-    return this.position;
-  }
-
-  @Override
-  public void setPosition(Position position) {
-    this.position = this.world.getPosition(position);
-  }
-
-  protected final World world;
-  protected Position position;
 
 }

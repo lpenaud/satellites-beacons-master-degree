@@ -9,9 +9,9 @@ public interface Observer<T> {
   
   /**
    * Method to be call if the observer are updated.
-   * @param observer Observer to be update
+   * @param observable Observer to be update
    * @param target 
    */
-  void update(Observer<T> observer, T target);
+  void update(T target);
 
 }

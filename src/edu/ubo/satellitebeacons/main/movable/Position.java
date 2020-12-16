@@ -1,4 +1,4 @@
-package edu.ubo.satellitebeacons.main.world;
+package edu.ubo.satellitebeacons.main.movable;
 
 public class Position {
 
@@ -21,6 +21,16 @@ public class Position {
 
   public int getY() {
     return y;
+  }
+
+  @Override
+  public String toString() {
+    return new StringBuilder("Position{ x: ")
+        .append(x)
+        .append(", y: ")
+        .append(y)
+        .append(" }")
+        .toString();
   }
 
   protected int x;
