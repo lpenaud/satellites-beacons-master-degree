@@ -23,7 +23,7 @@ public class GSatellite extends GOval implements Observer<Position>, PositionCha
   }
 
   @Override
-  public void onPositionChanged(final PositionChangedEvent event) {
+  public void onEvent(final PositionChangedEvent event) {
     this.setPosition(new Point(event.getPosition().getX(), event.getPosition().getY()));
     this.repaint();
   }

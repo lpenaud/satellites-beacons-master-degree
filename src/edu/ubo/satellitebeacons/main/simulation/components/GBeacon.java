@@ -23,7 +23,7 @@ public class GBeacon extends GRect implements Observer<Position>, PositionChange
   }
 
   @Override
-  public void onPositionChanged(final PositionChangedEvent event) {
+  public void onEvent(final PositionChangedEvent event) {
     this.setPosition(new Point(event.getPosition().getX(), event.getPosition().getY()));
     this.repaint();
   }

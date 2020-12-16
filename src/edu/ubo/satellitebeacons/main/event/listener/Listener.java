@@ -1,4 +1,7 @@
 package edu.ubo.satellitebeacons.main.event.listener;
 
-public interface Listener {
+import java.util.EventObject;
+
+public interface Listener<E extends EventObject> {
+  void onEvent(E event);
 }

@@ -4,5 +4,5 @@ import java.util.EventObject;
 import edu.ubo.satellitebeacons.main.event.listener.Listener;
 
 public interface Emitter {
-  void addEventListener(Class<? extends EventObject> event, Listener l);
+  <E extends EventObject> void addEventListener(Class<E> event, Listener<E> l);
 }
