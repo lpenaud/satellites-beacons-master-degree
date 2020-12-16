@@ -5,9 +5,9 @@ import java.awt.Point;
 import edu.ubo.graphicLayer.GRect;
 import edu.ubo.satellitebeacons.main.event.PositionChangedEvent;
 import edu.ubo.satellitebeacons.main.event.listener.PositionChangedListener;
-import edu.ubo.satellitebeacons.main.movable.Position;
 import edu.ubo.satellitebeacons.main.observable.Observer;
 import edu.ubo.satellitebeacons.main.simulation.GraphicUtils;
+import edu.ubo.satellitebeacons.main.space.Position;
 
 public class GBeacon extends GRect implements Observer<Position>, PositionChangedListener {
 
@@ -15,7 +15,7 @@ public class GBeacon extends GRect implements Observer<Position>, PositionChange
     this.setColor(GraphicUtils.getRandomColor());
     this.setDimension(new Dimension(30, 30));
   }
- 
+
   @Override
   public void update(final Position target) {
     this.setPosition(new Point(target.getX(), target.getY()));
@@ -23,7 +23,7 @@ public class GBeacon extends GRect implements Observer<Position>, PositionChange
   }
 
   @Override
-  public void onEvent(final PositionChangedEvent event) {
+  public void onPositionChangedEvent(final PositionChangedEvent event) {
     this.setPosition(new Point(event.getPosition().getX(), event.getPosition().getY()));
     this.repaint();
   }

@@ -1,6 +1,5 @@
 package edu.ubo.satellitebeacons.main.event;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,19 +18,13 @@ public class EventManager {
     listeners.add(l);
   }
   
-  public void emitEvent(final EventObject event) {
+  @SuppressWarnings("unchecked")
+  public <E extends EventObject> void emitEvent(final E event) {
     final var listeners = this.map.get(event.getClass());
     if (listeners == null) {
       return;
     }
-    listeners.forEach(l -> {
-      try {
-        l.getClass().getMethod("onEvent", event.getClass()).invoke(l, event);
-      } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-          | NoSuchMethodException | SecurityException e) {
-        e.printStackTrace();
-      }
-    });
+    listeners.forEach(l -> ((Listener<E>) l).onEvent(event));
   }
   
   protected final Map<Class<? extends EventObject>, Set<Listener<?>>> map;

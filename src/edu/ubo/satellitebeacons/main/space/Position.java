@@ -1,10 +1,15 @@
-package edu.ubo.satellitebeacons.main.movable;
+package edu.ubo.satellitebeacons.main.space;
 
 public class Position {
 
   public Position(final int x, final int y) {
     this.x = x;
     this.y = y;
+  }
+  
+  
+  public Position next(final Vector vector) {
+    return new Position(x + vector.x, y + vector.y);
   }
 
   public Position nextX(final int x) {

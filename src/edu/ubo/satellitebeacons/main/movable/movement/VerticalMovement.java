@@ -1,7 +1,7 @@
 package edu.ubo.satellitebeacons.main.movable.movement;
 
 import edu.ubo.satellitebeacons.main.movable.Movable;
-import edu.ubo.satellitebeacons.main.movable.Position;
+import edu.ubo.satellitebeacons.main.space.Position;
 
 public class VerticalMovement implements Movement {
   

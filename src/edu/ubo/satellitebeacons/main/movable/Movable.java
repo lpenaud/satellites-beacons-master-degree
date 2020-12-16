@@ -10,6 +10,7 @@ import edu.ubo.satellitebeacons.main.event.listener.Listener;
 import edu.ubo.satellitebeacons.main.movable.movement.Movement;
 import edu.ubo.satellitebeacons.main.observable.Observable;
 import edu.ubo.satellitebeacons.main.observable.Observer;
+import edu.ubo.satellitebeacons.main.space.Position;
 
 public abstract class Movable implements Observable<Position>, PositionChangedEmitter {
 

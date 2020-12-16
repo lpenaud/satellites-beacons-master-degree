@@ -4,13 +4,14 @@ import java.awt.Dimension;
 import edu.ubo.graphicLayer.GSpace;
 import edu.ubo.satellitebeacons.main.event.PositionChangedEvent;
 import edu.ubo.satellitebeacons.main.movable.Beacon;
-import edu.ubo.satellitebeacons.main.movable.Position;
 import edu.ubo.satellitebeacons.main.movable.Satellite;
-import edu.ubo.satellitebeacons.main.movable.movement.HorizontalMovement;
+import edu.ubo.satellitebeacons.main.movable.movement.HorizontalMouvement;
+import edu.ubo.satellitebeacons.main.movable.movement.LeftMovement;
 import edu.ubo.satellitebeacons.main.movable.movement.VerticalMovement;
 import edu.ubo.satellitebeacons.main.simulation.components.GBeacon;
 import edu.ubo.satellitebeacons.main.simulation.components.GSatellite;
 import edu.ubo.satellitebeacons.main.simulation.components.GSea;
+import edu.ubo.satellitebeacons.main.space.Position;
 
 public class Simulation implements Runnable {
   
@@ -29,11 +30,11 @@ public class Simulation implements Runnable {
     final var gSea = new GSea();
     final var gBeacon = new GBeacon();
     final var gSatellite = new GSatellite();
-    beacon.addEventListener(PositionChangedEvent.class, gBeacon);
-    beacon.setMovement(new VerticalMovement(300 - gBeacon.getHeight() / 2, 600 - gBeacon.getHeight()));
-    
-    satellite.addEventListener(PositionChangedEvent.class, gSatellite);
-    satellite.setMovement(new HorizontalMovement(-100, 900));
+ 
+    beacon.addEventListener(PositionChangedEvent.class, gBeacon::onPositionChangedEvent);
+    beacon.setMovement(new VerticalMovement(300 - gBeacon.getHeight() / 2, 600 - gBeacon.getHeight()));   
+    satellite.addEventListener(PositionChangedEvent.class, gSatellite::onPositionChangedEvent);
+    satellite.setMovement(new HorizontalMouvement(-100, 900, 10));
     
     window.addElement(gSea);
     window.addElement(gBeacon);
@@ -48,6 +49,7 @@ public class Simulation implements Runnable {
     while (true) {
       satellite.move();
       beacon.move();
+      System.out.println(satellite.getPosition());
       try {
         Thread.sleep(100);
       } catch (InterruptedException e) {

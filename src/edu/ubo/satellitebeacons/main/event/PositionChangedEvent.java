@@ -1,7 +1,7 @@
 package edu.ubo.satellitebeacons.main.event;
 
 import java.util.EventObject;
-import edu.ubo.satellitebeacons.main.movable.Position;
+import edu.ubo.satellitebeacons.main.space.Position;
 
 public class PositionChangedEvent extends EventObject {
   private static final long serialVersionUID = 3681873409717434683L;
