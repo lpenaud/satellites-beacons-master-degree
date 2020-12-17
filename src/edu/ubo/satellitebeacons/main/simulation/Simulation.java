@@ -7,6 +7,7 @@ import edu.ubo.satellitebeacons.main.movable.Beacon;
 import edu.ubo.satellitebeacons.main.movable.Satellite;
 import edu.ubo.satellitebeacons.main.movable.movement.HorizontalMouvement;
 import edu.ubo.satellitebeacons.main.movable.movement.LeftMovement;
+import edu.ubo.satellitebeacons.main.movable.movement.StackMovement;
 import edu.ubo.satellitebeacons.main.movable.movement.VerticalMovement;
 import edu.ubo.satellitebeacons.main.simulation.components.GBeacon;
 import edu.ubo.satellitebeacons.main.simulation.components.GSatellite;
@@ -32,7 +33,8 @@ public class Simulation implements Runnable {
     final var gSatellite = new GSatellite();
  
     beacon.addEventListener(PositionChangedEvent.class, gBeacon::onPositionChangedEvent);
-    beacon.setMovement(new VerticalMovement(300 - gBeacon.getHeight() / 2, 600 - gBeacon.getHeight()));   
+    // new VerticalMovement(300 - gBeacon.getHeight() / 2, 600 - gBeacon.getHeight())
+    beacon.setMovement(new HorizontalMouvement(10, 690, 10));    
     satellite.addEventListener(PositionChangedEvent.class, gSatellite::onPositionChangedEvent);
     satellite.setMovement(new HorizontalMouvement(-100, 900, 10));
     
@@ -49,7 +51,7 @@ public class Simulation implements Runnable {
     while (true) {
       satellite.move();
       beacon.move();
-      System.out.println(satellite.getPosition());
+      System.out.println(beacon.getPosition());
       try {
         Thread.sleep(100);
       } catch (InterruptedException e) {

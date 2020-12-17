@@ -6,7 +6,7 @@ import edu.ubo.graphicLayer.GOval;
 import edu.ubo.satellitebeacons.main.event.PositionChangedEvent;
 import edu.ubo.satellitebeacons.main.event.listener.PositionChangedListener;
 import edu.ubo.satellitebeacons.main.observable.Observer;
-import edu.ubo.satellitebeacons.main.simulation.GraphicUtils;
+import edu.ubo.satellitebeacons.main.simulation.utils.GraphicUtils;
 import edu.ubo.satellitebeacons.main.space.Position;
 
 public class GSatellite extends GOval implements Observer<Position>, PositionChangedListener {

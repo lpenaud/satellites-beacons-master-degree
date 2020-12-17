@@ -1,4 +1,4 @@
-package edu.ubo.satellitebeacons.main.simulation;
+package edu.ubo.satellitebeacons.main.simulation.utils;
 
 import java.awt.Color;
 import java.util.Random;
