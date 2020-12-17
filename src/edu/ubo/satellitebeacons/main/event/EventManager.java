@@ -13,9 +13,17 @@ public class EventManager {
     this.map = new HashMap<>();
   }
   
-  public void addEventListener(final Class<? extends EventObject> event, final Listener<?> l) {
+  public <E extends EventObject> void addEventListener(final Class<E> event, final Listener<E> l) {
     final var listeners = this.map.computeIfAbsent(event, v -> new HashSet<>());
     listeners.add(l);
+  }
+  
+  public <E extends EventObject> void removeEventListener(final Class<E> event, final Listener<E> l) {
+    final var listeners = this.map.get(event);
+    if (listeners == null) {
+      return;
+    }
+    listeners.remove(l);
   }
   
   @SuppressWarnings("unchecked")

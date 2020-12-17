@@ -13,6 +13,7 @@ import edu.ubo.satellitebeacons.main.simulation.components.GBeacon;
 import edu.ubo.satellitebeacons.main.simulation.components.GSatellite;
 import edu.ubo.satellitebeacons.main.simulation.components.GSea;
 import edu.ubo.satellitebeacons.main.space.Position;
+import edu.ubo.satellitebeacons.main.space.SpaceFactory;
 
 public class Simulation implements Runnable {
   
@@ -22,8 +23,8 @@ public class Simulation implements Runnable {
   }
   
   public Simulation() {
-    satellite = new Satellite(new Position(0, 0));
-    beacon = new Beacon(new Position(400, 300));
+    satellite = new Satellite(SpaceFactory.SINGLETON.getPosition(0, 0));
+    beacon = new Beacon(SpaceFactory.SINGLETON.getPosition(400, 300));
   }
   
   public GSpace setup() {
@@ -33,7 +34,6 @@ public class Simulation implements Runnable {
     final var gSatellite = new GSatellite();
  
     beacon.addEventListener(PositionChangedEvent.class, gBeacon::onPositionChangedEvent);
-    // new VerticalMovement(300 - gBeacon.getHeight() / 2, 600 - gBeacon.getHeight())
     beacon.setMovement(new HorizontalMouvement(10, 690, 10));    
     satellite.addEventListener(PositionChangedEvent.class, gSatellite::onPositionChangedEvent);
     satellite.setMovement(new HorizontalMouvement(-100, 900, 10));
