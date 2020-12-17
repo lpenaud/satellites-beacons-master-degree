@@ -5,7 +5,6 @@ import edu.ubo.satellitebeacons.main.event.EventManager;
 import edu.ubo.satellitebeacons.main.event.DestinationReachEvent;
 import edu.ubo.satellitebeacons.main.event.listener.Listener;
 import edu.ubo.satellitebeacons.main.movable.Movable;
-import edu.ubo.satellitebeacons.main.space.SpaceFactory;
 import edu.ubo.satellitebeacons.main.space.Vector;
 
 public class LeftMovement implements DirectionalMovement {
@@ -18,7 +17,7 @@ public class LeftMovement implements DirectionalMovement {
 
   @Override
   public void move(final Movable movable) {
-    final var position = SpaceFactory.SINGLETON.nextX(movable.getPosition(), speed);
+    final var position = movable.getPosition().nextX(speed);
     movable.setPosition(position);
     if (position.getX() <= min) {
       this.emitMaxReach();

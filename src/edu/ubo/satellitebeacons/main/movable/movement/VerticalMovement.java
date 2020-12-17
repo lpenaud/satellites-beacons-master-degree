@@ -2,7 +2,6 @@ package edu.ubo.satellitebeacons.main.movable.movement;
 
 import edu.ubo.satellitebeacons.main.movable.Movable;
 import edu.ubo.satellitebeacons.main.space.Position;
-import edu.ubo.satellitebeacons.main.space.SpaceFactory;
 
 public class VerticalMovement implements Movement {
   
@@ -15,12 +14,12 @@ public class VerticalMovement implements Movement {
   public void move(final Movable movable) {
     final Position position;
     if (mount) {
-      position = SpaceFactory.SINGLETON.nextY(movable.getPosition(), 5);
+      position = movable.getPosition().nextY(5);
       if (position.getY() >= max) {
         mount = false;
       }
     } else {
-      position = SpaceFactory.SINGLETON.nextY(movable.getPosition(), -5);
+      position = movable.getPosition().nextY(-5);
       if (position.getY() <= min) {
         mount = true;
       }
