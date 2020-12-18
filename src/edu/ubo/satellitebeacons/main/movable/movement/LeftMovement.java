@@ -17,7 +17,7 @@ public class LeftMovement implements DirectionalMovement {
 
   @Override
   public void move(final Movable movable) {
-    final var position = movable.getPosition().nextX(speed);
+    final var position = movable.getPosition().previousX(speed);
     movable.setPosition(position);
     if (position.getX() <= min) {
       this.emitMaxReach();

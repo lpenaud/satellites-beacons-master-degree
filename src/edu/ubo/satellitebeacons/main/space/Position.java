@@ -7,7 +7,6 @@ public class Position {
     this.y = y;
   }
   
-  
   public Position next(final Vector vector) {
     return new Position(x + vector.x, y + vector.y);
   }
@@ -18,6 +17,18 @@ public class Position {
 
   public Position nextY(final int y) {
     return new Position(this.x, this.y + y);
+  }
+  
+  public Position previousX(final int x) {
+    return new Position(this.x - x, y);
+  }
+  
+  public Position previousY(final int y) {
+    return new Position(this.x, this.y - y);
+  }
+  
+  public Position previous(final Vector vector) {
+    return new Position(this.x - vector.x, this.y - vector.y);
   }
 
   public int getX() {

@@ -17,7 +17,8 @@ public class UpMovement implements DirectionalMovement {
 
   @Override
   public void move(Movable movable) {
-    final var position = movable.getPosition().nextY(speed);
+    final var position = movable.getPosition().previousY(speed);
+    movable.setPosition(position);
     if (position.getY() <= min) {
       this.emitMaxReach();
     }
@@ -31,6 +32,11 @@ public class UpMovement implements DirectionalMovement {
   @Override
   public <E extends EventObject> void addEventListener(Class<E> event, Listener<E> l) {
     this.eventManager.addEventListener(event, l);
+  }
+  
+  @Override
+  public <E extends EventObject> void removeEventListener(Class<E> event, Listener<E> l) {
+    this.eventManager.removeEventListener(event, l);
   }
   
   protected final int min;

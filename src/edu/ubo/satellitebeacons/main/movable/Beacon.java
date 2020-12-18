@@ -1,9 +1,11 @@
 package edu.ubo.satellitebeacons.main.movable;
 
 import java.util.EventObject;
+import edu.ubo.satellitebeacons.main.event.DestinationReachEvent;
 import edu.ubo.satellitebeacons.main.event.EventManager;
 import edu.ubo.satellitebeacons.main.event.FullCapacityEvent;
-import edu.ubo.satellitebeacons.main.event.PositionChangedEvent;
+import edu.ubo.satellitebeacons.main.event.MessageEvent;
+import edu.ubo.satellitebeacons.main.event.chanel.Port;
 import edu.ubo.satellitebeacons.main.event.emitter.FullCapacityEmitter;
 import edu.ubo.satellitebeacons.main.event.listener.FullCapacityListener;
 import edu.ubo.satellitebeacons.main.event.listener.Listener;
@@ -24,6 +26,11 @@ public class Beacon extends Movable implements FullCapacityListener {
     public <E extends EventObject> void addEventListener(final Class<E> event, final Listener<E> l) {
       this.eventManager.addEventListener(event, l);
     }
+    
+    @Override
+    public <E extends EventObject> void removeEventListener(final Class<E> event, final Listener<E> l) {
+      this.eventManager.removeEventListener(event, l);
+    }
 
     @Override
     public void emitFullCapacity() {
@@ -31,11 +38,19 @@ public class Beacon extends Movable implements FullCapacityListener {
     }
     
     public void add(final int i) {
-      if (this.used < this.capacity) {
-        this.used += i;        
-      } else {
+      if (this.isFull()) {
         this.emitFullCapacity();        
+      } else {
+        this.used += i;        
       }
+    }
+    
+    public void clean() {
+      this.used = 0;
+    }
+    
+    public boolean isFull() {
+      return this.used >= this.capacity;
     }
 
     protected final EventManager eventManager;
@@ -43,30 +58,42 @@ public class Beacon extends Movable implements FullCapacityListener {
     protected int used;
   }
 
-  public Beacon(final Position position) {
+  public Beacon(final Position position, final Port<Satellite> port) {
     this.position = position;
     this.memory = new Memory(50);
     this.memory.addEventListener(FullCapacityEvent.class, this::onFullCapacity);
+    this.port = port;
   }
   
   @Override
   public void move() {
     super.move();
-    this.memory.add(1);
+    if (!(this.movement instanceof UpMovement) && !(this.movement instanceof MovementLess)) {
+      this.memory.add(1);
+    }
   }
   
   @Override
   public void onFullCapacity(final FullCapacityEvent event) {
-    // TODO: Keep the previous movement
     final var movement = new UpMovement(Constants.SEA_LEVEL, 5);
-    movement.addEventListener(PositionChangedEvent.class, this::reachSeaLevel);
+    movement.addEventListener(DestinationReachEvent.class, this::reachSeaLevel);
     this.movement = movement;
   }
   
-  public void reachSeaLevel(final PositionChangedEvent event) {
-    // TODO: On cherche le satellite
+  public void reachSeaLevel(final DestinationReachEvent event) {
+    ((UpMovement) event.getSource()).removeEventListener(event.getClass(), this::reachSeaLevel);
     this.movement = new MovementLess();
+    this.port.addEventListener(MessageEvent.class, this::onMessage);
+  }
+  
+  public void onMessage(final MessageEvent<Satellite> event) {
+    final var diff = this.position.getX() - event.getContent().getPosition().getX();
+    if (diff >= Constants.MIN_RADIUS && diff <= Constants.MAX_RADIUS) {
+      event.getContent().receive(this.memory);
+      this.port.removeEventListener(event.getClass(), this::onMessage);
+    }
   }
   
   protected final Memory memory;
+  protected final Port<Satellite> port;
 }

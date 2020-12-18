@@ -26,17 +26,15 @@ public class StackMovement implements Movement, DestinationReachListener {
   }
   
   @Override
-  public void onMaxReachEvent(DestinationReachEvent event) {
-    if (this.index >= this.movements.length) {
-      this.index++;
-    } else {
+  public void onDestinationReachEvent(DestinationReachEvent event) {
+    if (this.index++ >= this.movements.length) {
       this.index = 0;
     }
   }
   
   protected void setDirectionalMovement(final int i, final DirectionalMovement movement) {
     this.movements[i] = movement;
-    movement.addEventListener(DestinationReachEvent.class, this::onMaxReachEvent);
+    movement.addEventListener(DestinationReachEvent.class, this::onDestinationReachEvent);
   }
   
   protected final DirectionalMovement[] movements;
