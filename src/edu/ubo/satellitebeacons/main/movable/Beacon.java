@@ -2,9 +2,11 @@ package edu.ubo.satellitebeacons.main.movable;
 
 import edu.ubo.satellitebeacons.main.event.DestinationReachEvent;
 import edu.ubo.satellitebeacons.main.event.MessageEvent;
-import edu.ubo.satellitebeacons.main.event.SyncEvent;
+import edu.ubo.satellitebeacons.main.event.StartSyncEvent;
+import edu.ubo.satellitebeacons.main.event.StopSyncEvent;
 import edu.ubo.satellitebeacons.main.event.chanel.Port;
 import edu.ubo.satellitebeacons.main.event.listener.Listener;
+import edu.ubo.satellitebeacons.main.movable.movement.DownMovement;
 import edu.ubo.satellitebeacons.main.movable.movement.MovementLess;
 import edu.ubo.satellitebeacons.main.movable.movement.UpMovement;
 import edu.ubo.satellitebeacons.main.simulation.utils.Constants;
@@ -21,8 +23,18 @@ public class Beacon extends Movable {
       if (this.isFull()) {
         fullCapacity();
       } else {
-        this.used += i;        
+        this.used += i;
       }
+    }
+    
+    public int remove(final int i) {
+      if (this.used - i < 0) {
+        final int res = this.used;
+        this.used = 0;
+        return res;
+      }
+      this.used -= i;
+      return i;
     }
     
     public void clean() {
@@ -31,6 +43,10 @@ public class Beacon extends Movable {
     
     public boolean isFull() {
       return this.used >= this.capacity;
+    }
+    
+    public boolean isEmpty() {
+      return this.used == 0;
     }
 
     protected final int capacity;
@@ -43,7 +59,8 @@ public class Beacon extends Movable {
     this.port = port;
     this.takePhoto = true;
     this.reachSeaLevelListener = this::reachSeaLevel;
-    this.satelliteMessageListener = this::onMessage;
+    this.satelliteMessageListener = this::onSatelliteMessage;
+    this.stopSyncListener = this::onStopSync;
   }
   
   @Override
@@ -67,20 +84,28 @@ public class Beacon extends Movable {
     this.port.addEventListener(MessageEvent.class, this.satelliteMessageListener);
   }
   
-  public void onMessage(final MessageEvent<Satellite> event) {
+  public void onSatelliteMessage(final MessageEvent<Satellite> event) {
     final var diff = this.position.getX() - event.getContent().getPosition().getX();
     if (diff >= Constants.MIN_RADIUS && diff <= Constants.MAX_RADIUS) {
-      event.getContent().receive(this.memory);
+      event.getContent().listenerManager.addEventListener(StopSyncEvent.class, this.stopSyncListener);
       this.port.removeEventListener(MessageEvent.class, this.satelliteMessageListener);
-      this.listenerManager.emitEvent(new SyncEvent(this));
-      this.takePhoto = true;
+      event.getContent().receive(this);
     }
+  }
+  
+  public void onStopSync(final StopSyncEvent event) {
+    this.setMovement(new DownMovement(700, 5));
+    this.takePhoto = true;
+    ((Satellite) event.getSource()).removeEventListener(StopSyncEvent.class, this.stopSyncListener);
   }
   
   protected final Memory memory;
   protected final Port<Satellite> port;
   protected boolean takePhoto;
+  
+  // Listeners
   protected final Listener<DestinationReachEvent> reachSeaLevelListener;
   @SuppressWarnings("rawtypes")
   protected final Listener<MessageEvent> satelliteMessageListener;
+  protected final Listener<StopSyncEvent> stopSyncListener;
 }

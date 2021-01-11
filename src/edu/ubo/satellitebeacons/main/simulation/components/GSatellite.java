@@ -1,30 +1,24 @@
 package edu.ubo.satellitebeacons.main.simulation.components;
 
 import java.awt.Dimension;
-import java.awt.Point;
-import edu.ubo.graphicLayer.GOval;
-import edu.ubo.satellitebeacons.main.event.PositionChangedEvent;
-import edu.ubo.satellitebeacons.main.event.listener.PositionChangedListener;
-import edu.ubo.satellitebeacons.main.observable.Observer;
-import edu.ubo.satellitebeacons.main.simulation.utils.GraphicUtils;
-import edu.ubo.satellitebeacons.main.space.Position;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import edu.ubo.graphicLayer.GImage;
 
-public class GSatellite extends GOval implements Observer<Position>, PositionChangedListener {
+public class GSatellite extends GMovable {
   
   public GSatellite() {
-    this.setColor(GraphicUtils.getRandomColor());
-    this.setDimension(new Dimension(30, 30));
-  }
-
-  @Override
-  public void update(Position target) {
-    this.setPosition(new Point(target.getX(), target.getY()));
-    this.repaint();
-  }
-
-  @Override
-  public void onPositionChangedEvent(final PositionChangedEvent event) {
-    this.setPosition(new Point(event.getPosition().getX(), event.getPosition().getY()));
-    this.repaint();
+    final File file = new File("satellite.png");
+    this.withoutBorder();
+    this.withoutBackground();
+    try {
+      final BufferedImage img = ImageIO.read(file);
+      this.addElement(new GImage(img));
+      this.setDimension(new Dimension(img.getWidth(), img.getHeight()));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 }

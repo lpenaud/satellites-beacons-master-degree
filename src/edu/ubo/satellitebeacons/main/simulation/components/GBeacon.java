@@ -1,33 +1,25 @@
 package edu.ubo.satellitebeacons.main.simulation.components;
 
 import java.awt.Dimension;
-import java.awt.Point;
-import edu.ubo.graphicLayer.GRect;
-import edu.ubo.satellitebeacons.main.event.PositionChangedEvent;
-import edu.ubo.satellitebeacons.main.event.listener.PositionChangedListener;
-import edu.ubo.satellitebeacons.main.observable.Observer;
-import edu.ubo.satellitebeacons.main.simulation.utils.GraphicUtils;
-import edu.ubo.satellitebeacons.main.space.Position;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import edu.ubo.graphicLayer.GImage;
 
-public class GBeacon extends GRect implements Observer<Position>, PositionChangedListener {
+public class GBeacon extends GMovable {
 
   public GBeacon() {
-    this.setColor(GraphicUtils.getRandomColor());
-    this.setDimension(new Dimension(30, 30));
+    final File file = new File("beacon.png");
+    this.withoutBorder();
+    this.withoutBackground();
+    try {
+      final BufferedImage img = ImageIO.read(file);
+      this.addElement(new GImage(img));
+      this.setDimension(new Dimension(img.getWidth(), img.getHeight()));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
-
-  @Override
-  public void update(final Position target) {
-    this.setPosition(new Point(target.getX(), target.getY()));
-    this.repaint();
-  }
-
-  @Override
-  public void onPositionChangedEvent(final PositionChangedEvent event) {
-    this.setPosition(new Point(event.getPosition().getX(), event.getPosition().getY()));
-    this.repaint();
-  }
-  
-  //TODO: Override draw (emit sync event)
 
 }

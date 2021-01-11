@@ -65,10 +65,15 @@ public abstract class Movable implements Observable<Position>, PositionChangedEm
   public void setMovement(Movement movement) {
     this.movement = movement;
   }
-  
+
   @Override
   public <E extends EventObject> Listener<E> addEventListener(Class<E> event, Listener<E> l) {
     return listenerManager.addEventListener(event, l);
+  }
+
+  @Override
+  public <E extends EventObject> Listener<E> removeEventListener(Class<E> event, Listener<E> l) {
+    return listenerManager.removeEventListener(event, l);
   }
   
   @Override

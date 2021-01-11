@@ -3,7 +3,8 @@ package edu.ubo.satellitebeacons.main.simulation;
 import java.awt.Dimension;
 import edu.ubo.graphicLayer.GSpace;
 import edu.ubo.satellitebeacons.main.event.PositionChangedEvent;
-import edu.ubo.satellitebeacons.main.event.SyncEvent;
+import edu.ubo.satellitebeacons.main.event.StartSyncEvent;
+import edu.ubo.satellitebeacons.main.event.StopSyncEvent;
 import edu.ubo.satellitebeacons.main.event.chanel.Port;
 import edu.ubo.satellitebeacons.main.movable.Beacon;
 import edu.ubo.satellitebeacons.main.movable.Satellite;
@@ -27,7 +28,6 @@ public class Simulation implements Runnable {
     final Port<Satellite> port = new Port<>();
     satellite = new Satellite(new Position(0, 0), port);
     beacon = new Beacon(new Position(400, Constants.SEA_LEVEL + 20), port);
-    beacon.addEventListener(SyncEvent.class, this::onSync);
   }
   
   public GSpace setup() {
@@ -37,9 +37,13 @@ public class Simulation implements Runnable {
     final var gSatellite = new GSatellite();
 
     beacon.addEventListener(PositionChangedEvent.class, gBeacon::onPositionChangedEvent);
-    beacon.setMovement(new LeftMovement(0, 4));    
+    beacon.setMovement(new LeftMovement(0, 4));
+    beacon.addEventListener(StartSyncEvent.class, gBeacon::onStartSync);
+    beacon.addEventListener(StopSyncEvent.class, gBeacon::onStopSync);
     satellite.addEventListener(PositionChangedEvent.class, gSatellite::onPositionChangedEvent);
     satellite.setMovement(new HorizontalMouvement(-100, 900, 10));
+    satellite.addEventListener(StartSyncEvent.class, gSatellite::onStartSync);
+    satellite.addEventListener(StopSyncEvent.class, gSatellite::onStopSync);
 
     window.addElement(gSea);
     window.addElement(gBeacon);
@@ -61,11 +65,6 @@ public class Simulation implements Runnable {
         e.printStackTrace();
       }
     }
-  }
-  
-  public void onSync(final SyncEvent event) {
-    System.out.println(event);
-    this.beacon.setMovement(new DownMovement(300, 5));
   }
   
   protected final Satellite satellite;
