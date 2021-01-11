@@ -25,8 +25,8 @@ public class RightMovement implements DirectionalMovement {
   }
 
   @Override
-  public <E extends EventObject> void addEventListener(Class<E> event, Listener<E> l) {
-    this.eventManager.addEventListener(event, l);
+  public <E extends EventObject> Listener<E> addEventListener(Class<E> event, Listener<E> l) {
+    return this.eventManager.addEventListener(event, l);
   }
 
   @Override

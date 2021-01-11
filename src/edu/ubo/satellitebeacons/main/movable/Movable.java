@@ -67,8 +67,8 @@ public abstract class Movable implements Observable<Position>, PositionChangedEm
   }
   
   @Override
-  public <E extends EventObject> void addEventListener(Class<E> event, Listener<E> l) {
-    listenerManager.addEventListener(event, l);
+  public <E extends EventObject> Listener<E> addEventListener(Class<E> event, Listener<E> l) {
+    return listenerManager.addEventListener(event, l);
   }
   
   @Override

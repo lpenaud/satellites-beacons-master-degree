@@ -17,13 +17,13 @@ public class Port<T> implements Emitter {
   }
   
   @Override
-  public <E extends EventObject> void addEventListener(final Class<E> event, final Listener<E> l) {
-    this.eventManager.addEventListener(event, l);
+  public <E extends EventObject> Listener<E> addEventListener(final Class<E> event, final Listener<E> l) {
+    return this.eventManager.addEventListener(event, l);
   }
   
   @Override
-  public <E extends EventObject> void removeEventListener(final Class<E> event, final Listener<E> l) {
-    this.eventManager.removeEventListener(event, l);
+  public <E extends EventObject> Listener<E> removeEventListener(final Class<E> event, final Listener<E> l) {
+    return this.eventManager.removeEventListener(event, l);
   }
   
   protected final EventManager eventManager;

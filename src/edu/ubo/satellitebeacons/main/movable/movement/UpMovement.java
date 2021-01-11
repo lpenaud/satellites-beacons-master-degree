@@ -30,13 +30,13 @@ public class UpMovement implements DirectionalMovement {
   }
 
   @Override
-  public <E extends EventObject> void addEventListener(Class<E> event, Listener<E> l) {
-    this.eventManager.addEventListener(event, l);
+  public <E extends EventObject> Listener<E> addEventListener(Class<E> event, Listener<E> l) {
+    return this.eventManager.addEventListener(event, l);
   }
   
   @Override
-  public <E extends EventObject> void removeEventListener(Class<E> event, Listener<E> l) {
-    this.eventManager.removeEventListener(event, l);
+  public <E extends EventObject> Listener<E> removeEventListener(Class<E> event, Listener<E> l) {
+    return this.eventManager.removeEventListener(event, l);
   }
   
   protected final int min;

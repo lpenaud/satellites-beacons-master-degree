@@ -27,5 +27,7 @@ public class GBeacon extends GRect implements Observer<Position>, PositionChange
     this.setPosition(new Point(event.getPosition().getX(), event.getPosition().getY()));
     this.repaint();
   }
+  
+  //TODO: Override draw (emit sync event)
 
 }

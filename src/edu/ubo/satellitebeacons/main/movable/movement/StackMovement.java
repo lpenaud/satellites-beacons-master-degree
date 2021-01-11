@@ -27,7 +27,7 @@ public class StackMovement implements Movement, DestinationReachListener {
   
   @Override
   public void onDestinationReachEvent(DestinationReachEvent event) {
-    if (this.index++ >= this.movements.length) {
+    if (++this.index >= this.movements.length) {
       this.index = 0;
     }
   }

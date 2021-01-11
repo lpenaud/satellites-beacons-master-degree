@@ -15,17 +15,21 @@ public class EventManager implements Emitter {
   }
   
   @Override
-  public <E extends EventObject> void addEventListener(final Class<E> event, final Listener<E> l) {
+  public <E extends EventObject> Listener<E> addEventListener(final Class<E> event, final Listener<E> l) {
     final var listeners = this.map.computeIfAbsent(event, v -> new HashSet<>());
-    listeners.add(l);
+    if (listeners.add(l)) {
+      return l;
+    }
+    return null;
   }
   
   @Override
-  public <E extends EventObject> void removeEventListener(final Class<E> event, final Listener<E> l) {
+  public <E extends EventObject> Listener<E> removeEventListener(final Class<E> event, final Listener<E> l) {
     final var listeners = this.map.get(event);
-    if (listeners != null) {
-      listeners.remove(l);
+    if (listeners != null && listeners.remove(l)) {
+      return l;
     }
+    return null;
   }
   
   @SuppressWarnings("unchecked")
