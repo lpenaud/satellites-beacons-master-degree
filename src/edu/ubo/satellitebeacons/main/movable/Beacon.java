@@ -2,7 +2,6 @@ package edu.ubo.satellitebeacons.main.movable;
 
 import edu.ubo.satellitebeacons.main.event.DestinationReachEvent;
 import edu.ubo.satellitebeacons.main.event.MessageEvent;
-import edu.ubo.satellitebeacons.main.event.StartSyncEvent;
 import edu.ubo.satellitebeacons.main.event.StopSyncEvent;
 import edu.ubo.satellitebeacons.main.event.chanel.Port;
 import edu.ubo.satellitebeacons.main.event.listener.Listener;

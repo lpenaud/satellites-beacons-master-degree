@@ -1,4 +1,4 @@
-package edu.ubo.satellitebeacons.main.event;
+package edu.ubo.satellitebeacons.main.event.manager;
 
 import java.util.EventObject;
 import java.util.HashMap;
@@ -38,7 +38,11 @@ public class EventManager implements Emitter {
     if (listeners == null) {
       return;
     }
-    listeners.forEach(l -> ((Listener<E>) l).onEvent(event));
+    final var array = new Listener[listeners.size()];
+    listeners.toArray(array);
+    for (final Listener<E> listener : array) {
+      listener.onEvent(event);
+    }
   }
   
   protected final Map<Class<? extends EventObject>, Set<Listener<?>>> map;

@@ -1,10 +1,10 @@
 package edu.ubo.satellitebeacons.main.event.chanel;
 
 import java.util.EventObject;
-import edu.ubo.satellitebeacons.main.event.EventManager;
 import edu.ubo.satellitebeacons.main.event.MessageEvent;
 import edu.ubo.satellitebeacons.main.event.emitter.Emitter;
 import edu.ubo.satellitebeacons.main.event.listener.Listener;
+import edu.ubo.satellitebeacons.main.event.manager.EventManager;
 
 public class Port<T> implements Emitter {
 

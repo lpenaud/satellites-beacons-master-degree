@@ -2,8 +2,8 @@ package edu.ubo.satellitebeacons.main.movable.movement;
 
 import java.util.EventObject;
 import edu.ubo.satellitebeacons.main.event.DestinationReachEvent;
-import edu.ubo.satellitebeacons.main.event.EventManager;
 import edu.ubo.satellitebeacons.main.event.listener.Listener;
+import edu.ubo.satellitebeacons.main.event.manager.EventManager;
 import edu.ubo.satellitebeacons.main.movable.Movable;
 import edu.ubo.satellitebeacons.main.space.Vector;
 
