@@ -5,7 +5,6 @@ import edu.ubo.satellitebeacons.main.event.StartSyncEvent;
 import edu.ubo.satellitebeacons.main.event.StopSyncEvent;
 import edu.ubo.satellitebeacons.main.event.chanel.Port;
 import edu.ubo.satellitebeacons.main.event.listener.PositionChangedListener;
-import edu.ubo.satellitebeacons.main.movable.movement.HorizontalMovement;
 import edu.ubo.satellitebeacons.main.movable.movement.Movement;
 import edu.ubo.satellitebeacons.main.movable.movement.PrgmMovement;
 import edu.ubo.satellitebeacons.main.space.Position;
@@ -32,7 +31,7 @@ public class Satellite extends Movable implements PositionChangedListener {
     this.movement = new PrgmMovement(() -> {
       if (beacon.memory.remove(BUFFER_SIZE) < BUFFER_SIZE) {
         listenerManager.emitEvent(new StopSyncEvent(this));
-        beacon.listenerManager.emitEvent(new StopSyncEvent(this));
+        beacon.listenerManager.emitEvent(new StopSyncEvent(beacon));
       }
     });
   }

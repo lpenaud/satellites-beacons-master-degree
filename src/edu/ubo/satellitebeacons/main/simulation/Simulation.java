@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import edu.ubo.graphicLayer.GSpace;
+import edu.ubo.satellitebeacons.main.event.FullCapacityEvent;
 import edu.ubo.satellitebeacons.main.event.PositionChangedEvent;
 import edu.ubo.satellitebeacons.main.event.StartSyncEvent;
 import edu.ubo.satellitebeacons.main.event.StopSyncEvent;
@@ -15,7 +16,8 @@ import edu.ubo.satellitebeacons.main.movable.Beacon;
 import edu.ubo.satellitebeacons.main.movable.Movable;
 import edu.ubo.satellitebeacons.main.movable.Satellite;
 import edu.ubo.satellitebeacons.main.movable.movement.HorizontalMovement;
-import edu.ubo.satellitebeacons.main.movable.movement.Movement;
+import edu.ubo.satellitebeacons.main.movable.movement.SimpleHorizontalMovement;
+import edu.ubo.satellitebeacons.main.movable.movement.StackMovement;
 import edu.ubo.satellitebeacons.main.simulation.components.GBeacon;
 import edu.ubo.satellitebeacons.main.simulation.components.GMovable;
 import edu.ubo.satellitebeacons.main.simulation.components.GSatellite;
@@ -25,13 +27,11 @@ import edu.ubo.satellitebeacons.main.space.Position;
 
 public class Simulation implements Runnable {
   
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) {
     final var simulation = new Simulation();
     simulation.setup();
     simulation.open();
     simulation.run();
-//    thread.start();
-//    thread.join();
   }
   
   public Simulation() {
@@ -41,16 +41,18 @@ public class Simulation implements Runnable {
     this.satellites = new ArrayList<>();
   }
   
-  public void addBeacon(final Position p, final Movement movement) {
+  public void addBeacon(final Position p, final StackMovement movement) {
     final var beacon = new Beacon(p, portSatellite);
     beacon.setMovement(movement);
+    beacon.addEventListener(FullCapacityEvent.class, movement::onFullCapacity);
+    beacon.addEventListener(StopSyncEvent.class, movement::onStopSync);
     this.addMovable(beacon, new GBeacon());
     this.beacons.add(beacon);
   }
   
   public void addSatellite(final Position p) {
     final var satellite = new Satellite(p, portSatellite);
-    satellite.setMovement(new HorizontalMovement(-100, 900, 10));
+    satellite.setMovement(new SimpleHorizontalMovement(-100, 900, 10));
     this.addMovable(satellite, new GSatellite());
     this.satellites.add(satellite);
   }
@@ -77,7 +79,7 @@ public class Simulation implements Runnable {
   }
   
   public void open() {
-    javax.swing.SwingUtilities.invokeLater(window::open);
+    window.open();
   }
 
   @Override
@@ -85,10 +87,10 @@ public class Simulation implements Runnable {
     final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     final var beaconsCalls = beacons.stream()
         .map(b -> Executors.callable(b::move))
-        .collect(Collectors.toList());
+        .collect(Collectors.toUnmodifiableList());
     final var satelliteCalls = satellites.stream()
         .map(s -> Executors.callable(s::move))
-        .collect(Collectors.toList());
+        .collect(Collectors.toUnmodifiableList());
     try {
       while (true) {
         executor.invokeAll(beaconsCalls);

@@ -3,7 +3,8 @@ package edu.ubo.satellitebeacons.main.movable.movement;
 public class HorizontalMovement extends StackMovement {
   
   public HorizontalMovement(final int min, final int max, final int speed) {
-    super(new LeftMovement(min, speed), new RightMovement(max, speed));
+    super(new LeftMovement(min, speed));
+    this.setMovements(new RightMovement(max, speed));
   }
 
 }

@@ -1,17 +1,17 @@
 package edu.ubo.satellitebeacons.main.movable;
 
 import edu.ubo.satellitebeacons.main.event.DestinationReachEvent;
+import edu.ubo.satellitebeacons.main.event.FullCapacityEvent;
 import edu.ubo.satellitebeacons.main.event.MessageEvent;
 import edu.ubo.satellitebeacons.main.event.StopSyncEvent;
 import edu.ubo.satellitebeacons.main.event.chanel.Port;
 import edu.ubo.satellitebeacons.main.event.listener.Listener;
-import edu.ubo.satellitebeacons.main.movable.movement.DownMovement;
-import edu.ubo.satellitebeacons.main.movable.movement.MovementLess;
-import edu.ubo.satellitebeacons.main.movable.movement.UpMovement;
+import edu.ubo.satellitebeacons.main.movable.movement.DirectionalMovement;
 import edu.ubo.satellitebeacons.main.simulation.utils.Constants;
 import edu.ubo.satellitebeacons.main.space.Position;
 
 public class Beacon extends Movable {
+  public static final int SPEED = 5;
   
   public class Memory {
     public Memory(final int capacity) {
@@ -57,9 +57,9 @@ public class Beacon extends Movable {
     this.memory = new Memory(50);
     this.port = port;
     this.takePhoto = true;
-    this.reachSeaLevelListener = this::reachSeaLevel;
+    this.reachSeaLevelListener = this::onReachSeaLevel;
     this.satelliteMessageListener = this::onSatelliteMessage;
-    this.stopSyncListener = this::onStopSync;
+    this.reachOldPositionListener = this::onReachOldPosition;
   }
   
   @Override
@@ -71,31 +71,34 @@ public class Beacon extends Movable {
   }
   
   public void fullCapacity() {
-    final var movement = new UpMovement(Constants.SEA_LEVEL, 5);
-    movement.addEventListener(DestinationReachEvent.class, this.reachSeaLevelListener);
-    this.movement = movement;
     this.takePhoto = false;
+    this.listenerManager.emitEvent(new FullCapacityEvent(this));
   }
   
-  public void reachSeaLevel(final DestinationReachEvent event) {
-    ((UpMovement) event.getSource()).removeEventListener(DestinationReachEvent.class, this.reachSeaLevelListener);
-    this.movement = new MovementLess();
+  public void onReachSeaLevel(final DestinationReachEvent event) {
+    ((DirectionalMovement) event.getSource()).removeEventListener(DestinationReachEvent.class, this.reachOldPositionListener);
     this.port.addEventListener(MessageEvent.class, this.satelliteMessageListener);
   }
   
-  public void onSatelliteMessage(final MessageEvent<Satellite> event) {
+  protected void onSatelliteMessage(final MessageEvent<Satellite> event) {
     final var diff = this.position.getX() - event.getContent().getPosition().getX();
     if (diff >= Constants.MIN_RADIUS && diff <= Constants.MAX_RADIUS) {
-      event.getContent().listenerManager.addEventListener(StopSyncEvent.class, this.stopSyncListener);
       this.port.removeEventListener(MessageEvent.class, this.satelliteMessageListener);
       event.getContent().receive(this);
     }
   }
   
-  public void onStopSync(final StopSyncEvent event) {
-    this.setMovement(new DownMovement(700, 5));
+  protected void onReachOldPosition(final DestinationReachEvent event) {
     this.takePhoto = true;
-    ((Satellite) event.getSource()).removeEventListener(StopSyncEvent.class, this.stopSyncListener);
+    ((DirectionalMovement) event.getSource()).removeEventListener(DestinationReachEvent.class, this.reachOldPositionListener);
+  }
+  
+  public Listener<DestinationReachEvent> getReachOldPositionListener() {
+    return reachOldPositionListener;
+  }
+  
+  public Listener<DestinationReachEvent> getReachSeaLevelListener() {
+    return reachSeaLevelListener;
   }
   
   protected final Memory memory;
@@ -103,8 +106,8 @@ public class Beacon extends Movable {
   protected boolean takePhoto;
   
   // Listeners
-  protected final Listener<DestinationReachEvent> reachSeaLevelListener;
   @SuppressWarnings("rawtypes")
   protected final Listener<MessageEvent> satelliteMessageListener;
-  protected final Listener<StopSyncEvent> stopSyncListener;
+  protected final Listener<DestinationReachEvent> reachSeaLevelListener;
+  protected final Listener<DestinationReachEvent> reachOldPositionListener;
 }
