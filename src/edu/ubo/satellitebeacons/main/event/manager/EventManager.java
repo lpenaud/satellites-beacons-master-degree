@@ -10,6 +10,9 @@ import edu.ubo.satellitebeacons.main.event.listener.Listener;
 
 public class EventManager implements Emitter {
   
+  /**
+   * Create a new event manager.
+   */
   public EventManager() {
     this.map = new HashMap<>();
   }

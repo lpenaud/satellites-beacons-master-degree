@@ -1,0 +1,13 @@
+edu.ubo.graphicLayer
+edu.ubo.graphicLayer.demos
+edu.ubo.satellitebeacons.main.event
+edu.ubo.satellitebeacons.main.event.chanel
+edu.ubo.satellitebeacons.main.event.emitter
+edu.ubo.satellitebeacons.main.event.listener
+edu.ubo.satellitebeacons.main.event.manager
+edu.ubo.satellitebeacons.main.movable
+edu.ubo.satellitebeacons.main.movable.movement
+edu.ubo.satellitebeacons.main.simulation
+edu.ubo.satellitebeacons.main.simulation.components
+edu.ubo.satellitebeacons.main.simulation.utils
+edu.ubo.satellitebeacons.main.space

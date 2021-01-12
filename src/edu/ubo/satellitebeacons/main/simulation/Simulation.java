@@ -39,6 +39,7 @@ public class Simulation implements Runnable {
     this.window = new GSpace("Simulation", new Dimension(800, 600));
     this.beacons = new ArrayList<>();
     this.satellites = new ArrayList<>();
+    this.movables = new ArrayList<>();
   }
   
   public void addBeacon(final Position p, final StackMovement movement) {
@@ -47,14 +48,12 @@ public class Simulation implements Runnable {
     beacon.addEventListener(FullCapacityEvent.class, movement::onFullCapacity);
     beacon.addEventListener(StopSyncEvent.class, movement::onStopSync);
     this.addMovable(beacon, new GBeacon());
-    this.beacons.add(beacon);
   }
   
   public void addSatellite(final Position p) {
     final var satellite = new Satellite(p, portSatellite);
     satellite.setMovement(new SimpleHorizontalMovement(-100, 900, 10));
     this.addMovable(satellite, new GSatellite());
-    this.satellites.add(satellite);
   }
   
   public void addMovable(final Movable movable, final GMovable gMovable) {
@@ -62,6 +61,7 @@ public class Simulation implements Runnable {
     movable.addEventListener(StartSyncEvent.class, gMovable::onStartSync);
     movable.addEventListener(StopSyncEvent.class, gMovable::onStopSync);
     this.window.addElement(gMovable);
+    this.movables.add(movable);
   }
   
   public GSpace setup() {
@@ -85,16 +85,12 @@ public class Simulation implements Runnable {
   @Override
   public void run() {
     final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-    final var beaconsCalls = beacons.stream()
-        .map(b -> Executors.callable(b::move))
-        .collect(Collectors.toUnmodifiableList());
-    final var satelliteCalls = satellites.stream()
+    final var movableCalls = movables.stream()
         .map(s -> Executors.callable(s::move))
         .collect(Collectors.toUnmodifiableList());
     try {
       while (true) {
-        executor.invokeAll(beaconsCalls);
-        executor.invokeAll(satelliteCalls);
+        executor.invokeAll(movableCalls);
         Thread.sleep(100);
       }
     } catch (final Exception e) {
@@ -106,5 +102,6 @@ public class Simulation implements Runnable {
   protected final GSpace window;
   protected final List<Beacon> beacons;
   protected final List<Satellite> satellites;
+  protected final List<Movable> movables;
   
 }

@@ -1,23 +1,19 @@
 package edu.ubo.satellitebeacons.main.simulation.components;
 
-import java.awt.Dimension;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
-import edu.ubo.graphicLayer.GImage;
+import edu.ubo.satellitebeacons.main.simulation.utils.GConstants;
+import edu.ubo.satellitebeacons.main.simulation.utils.GraphicUtils;
 
+/**
+ * Graphic element which represents a satellite.
+ * @see GMovable
+ */
 public class GSatellite extends GMovable {
   
   public GSatellite() {
-    final File file = new File("satellite.png");
-    this.withoutBorder();
-    this.withoutBackground();
     try {
-      final BufferedImage img = ImageIO.read(file);
-      this.addElement(new GImage(img));
-      this.setDimension(new Dimension(img.getWidth(), img.getHeight()));
-    } catch (IOException e) {
+      GraphicUtils.setImage(this, GConstants.SATELLITE_PICTURE);
+    } catch (final IOException e) {
       e.printStackTrace();
     }
   }

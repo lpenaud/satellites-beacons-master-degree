@@ -1,14 +1,30 @@
 package edu.ubo.satellitebeacons.main.simulation.utils;
 
-import java.awt.Color;
-import java.util.Random;
+import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import edu.ubo.graphicLayer.GImage;
+import edu.ubo.graphicLayer.GRect;
 
-public class GraphicUtils {
+/**
+ * Some graphic utils methods.
+ */
+public final class GraphicUtils {
   
-  private static Random RANDOM = new Random();
-  
-  public static Color getRandomColor() {
-    return new Color(RANDOM.nextFloat(), RANDOM.nextFloat(), RANDOM.nextFloat());
+  /**
+   * Add image to a rectangle
+   * Set the rectangle dimension according to the image.
+   * @param element Rectangle 
+   * @param fileName Filename of the image.
+   * @throws IOException if an error occurs during reading or when notable to create required ImageInputStream.
+   */
+  public static void setImage(final GRect element, final String fileName) throws IOException {
+    final var img = ImageIO.read(new File(fileName));
+    element.withoutBorder();
+    element.withoutBackground();
+    element.addElement(new GImage(img));
+    element.setDimension(new Dimension(img.getWidth(), img.getHeight()));
   }
   
   private GraphicUtils() {}

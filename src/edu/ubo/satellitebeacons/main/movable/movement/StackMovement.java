@@ -25,7 +25,7 @@ public class StackMovement implements Movement {
   public StackMovement(final DirectionalMovement movement) {
     this.root = new Node(movement);
     movement.addEventListener(DestinationReachEvent.class, this::onDestinationReachEvent);
-    this.goSea = new UpMovement(Constants.SEA_LEVEL, Beacon.SPEED);
+    this.goSea = new UpMovement(Constants.SEA_LEVEL, Constants.BEACON_SPEED);
     this.goSea.addEventListener(DestinationReachEvent.class, this::onDestinationReachEvent);
   }
 
@@ -49,7 +49,7 @@ public class StackMovement implements Movement {
   public void onFullCapacity(final FullCapacityEvent event) {
     final var beacon = ((Beacon) event.getSource());
     // Create a factory method to create and add listener to a new directional movement?
-    final var downMovement = new DownMovement(beacon.getPosition().getY(), Beacon.SPEED);
+    final var downMovement = new DownMovement(beacon.getPosition().getY(), Constants.BEACON_SPEED);
     downMovement.addEventListener(DestinationReachEvent.class, this::onDestinationReachEvent);
     this.goSea.addEventListener(DestinationReachEvent.class, beacon.getReachSeaLevelListener());
     this.root = new Node(this.goSea, new Node(MovementLess.SINGLETON, new Node(downMovement, this.root)));

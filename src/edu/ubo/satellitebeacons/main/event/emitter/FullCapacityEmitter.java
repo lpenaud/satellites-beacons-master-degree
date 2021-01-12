@@ -1,5 +1,7 @@
 package edu.ubo.satellitebeacons.main.event.emitter;
 
 public interface FullCapacityEmitter extends Emitter {
-  void emitFullCapacity();
+  default void emitFullCapacity() {
+    throw new UnsupportedOperationException();
+  };
 }
