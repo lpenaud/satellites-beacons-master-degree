@@ -2,6 +2,9 @@
 
 Master's degree in computer science project. Simulation of satellites and beacons in the sea comportment.
 
+## JavaDoc
+You can read the documentations in the `docs` directory by a git clone or read it [online](https://lpenaud.github.io/satellites-beacons-master-degree/).
+
 ## TODO
 
 - [X] Add start / stop sync event
