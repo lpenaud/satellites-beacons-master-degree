@@ -7,6 +7,6 @@ You can read the documentations in the `docs` directory by a git clone or read i
 
 ## TODO
 
-- [X] Add start / stop sync event
+- [x] Add start / stop sync event
 - [x] Add parallel
 - [x] Test with greeter than one pair of beacon and satellite
