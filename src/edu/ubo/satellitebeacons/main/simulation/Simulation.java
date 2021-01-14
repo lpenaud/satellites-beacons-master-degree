@@ -23,17 +23,18 @@ import edu.ubo.satellitebeacons.main.simulation.components.GMovable;
 import edu.ubo.satellitebeacons.main.simulation.components.GSatellite;
 import edu.ubo.satellitebeacons.main.simulation.components.GSea;
 import edu.ubo.satellitebeacons.main.simulation.utils.Constants;
+import edu.ubo.satellitebeacons.main.simulation.utils.Utils;
 import edu.ubo.satellitebeacons.main.space.Position;
 
 public class Simulation implements Runnable {
-  
+
   public static void main(String[] args) {
     final var simulation = new Simulation();
     simulation.setup();
     simulation.open();
     simulation.run();
   }
-  
+
   public Simulation() {
     this.portSatellite = new Port<>();
     this.window = new GSpace("Simulation", new Dimension(800, 600));
@@ -41,7 +42,7 @@ public class Simulation implements Runnable {
     this.satellites = new ArrayList<>();
     this.movables = new ArrayList<>();
   }
-  
+
   public void addBeacon(final Position p, final StackMovement movement) {
     final var beacon = new Beacon(p, portSatellite);
     beacon.setMovement(movement);
@@ -49,13 +50,13 @@ public class Simulation implements Runnable {
     beacon.addEventListener(StopSyncEvent.class, movement::onStopSync);
     this.addMovable(beacon, new GBeacon());
   }
-  
+
   public void addSatellite(final Position p) {
     final var satellite = new Satellite(p, portSatellite);
-    satellite.setMovement(new SimpleHorizontalMovement(-100, 900, 10));
+    satellite.setMovement(new SimpleHorizontalMovement(-100, 900, Utils.getSatelliteSpeed(p)));
     this.addMovable(satellite, new GSatellite());
   }
-  
+
   public void addMovable(final Movable movable, final GMovable gMovable) {
     movable.addEventListener(PositionChangedEvent.class, gMovable::onPositionChangedEvent);
     movable.addEventListener(StartSyncEvent.class, gMovable::onStartSync);
@@ -63,7 +64,7 @@ public class Simulation implements Runnable {
     this.window.addElement(gMovable);
     this.movables.add(movable);
   }
-  
+
   public GSpace setup() {
     final var gSea = new GSea();
     window.addElement(gSea);
@@ -77,7 +78,7 @@ public class Simulation implements Runnable {
     this.addBeacon(new Position(300, 100 + Constants.SEA_LEVEL), new HorizontalMovement(200, 600, 10));
     return window;
   }
-  
+
   public void open() {
     window.open();
   }
@@ -85,8 +86,7 @@ public class Simulation implements Runnable {
   @Override
   public void run() {
     final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-    final var movableCalls = movables.stream()
-        .map(s -> Executors.callable(s::move))
+    final var movableCalls = movables.stream().map(s -> Executors.callable(s::move))
         .collect(Collectors.toUnmodifiableList());
     try {
       while (true) {
@@ -103,5 +103,5 @@ public class Simulation implements Runnable {
   protected final List<Beacon> beacons;
   protected final List<Satellite> satellites;
   protected final List<Movable> movables;
-  
+
 }
