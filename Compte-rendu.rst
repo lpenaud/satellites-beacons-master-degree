@@ -65,31 +65,58 @@ En effet un satellite doit être suffisament près en axe `y` de la balise pour 
 
 Satellite
 ===========
+La classe ``Satellite`` a pour but de simuler le comportement d'un satellite.
 
+Un satellite fait un mouvement horizontal, car il est en orbite dans l'espace.
+Il communique sa position via un port de communication, afin que la balise puisse transférer ses données.
 
 Movement
 ==========
+Les éléments mobiles avec les déplacements respectent le patron de conception **Stratégie**.
 
+Un élément mobile a un déplacement représenté par l'interface ``Movement``.
+Les différentes implémentations de cette inferface permet de couvrir un maxium de stratégie de déplacement.
+
+L'interface ``DirectionalMovement`` représente un mouvement qui émet un événement lorsque l'élément mobile atteint sa destination prévus.
 
 ----------------------------
 Représentation de l'espace
 ----------------------------
+Les éléments mobiles se déplacement dans un espace en deux dimensions sur les axes `x` et `y`.
 
+Il existe deux classes pouvant assurer une cohérence de l'espace :
 
-------------
-Simulation
-------------
+- La classe ``Position`` qui représente une position sur les axes `x` et `y`.
+- La classe ``Vector`` qui représente un déplacement sur les axes `x` et `y`
 
+---------------------------------
+Point d'entrée de la simulation
+---------------------------------
+Dans le paquetage ``simulation`` on peut trouver :
 
-Composants graphique
-======================
-
+- La classe ``Simulation`` où se trouve le point d'entrée de la simulation.
+- Le paquetage ``components`` où se trouve les composants graphique qui écoutes les événements émis par les éléments mobiles.
+- Le paquetage ``utils`` où se trouve les différentes constantes de la simulation et des fonctions outils.
 
 Constantes
 ============
+Il y a deux classes qui définissent les différentes constantes de la simulation :
 
+- ``GConstants`` qui contient les constantes en rapport avec la partie graphique de la simulation :
+  - ``BEACON_PICTURE`` : Chemin vers l'image représentant une balise.
+  - ``SATELLITE_PICTURE`` : Chemin vers l'image représentant un satellite.
+- ``Constants`` qui contient les constantes en rapport avec la logique de la simulation.
+  - ``SEA_LEVEL`` : Nombre entier qui représente le niveau de la mer sur l'axe `y`.
+  - ``MIN_RADIUS`` : Nombre entier représentant l'écart minimum de détection du satellite par la balise sur l'axe des `y` afin qu'ils puissent communiquer.
+  - ``MAX_RADIUS`` : Nombre entier représentant l'écart maximum de détection du satellite par la balise sur l'axe des `y` afin qu'ils puissent communiquer.
+  - ``BEACON_SPEED`` : Vitesse d'une balise.
+  - ``SATELLITE_MIN_SPEED`` : Vitesse minimum du satellite.
+  - ``SATELLITE_SPEED_FACTOR`` : Facteur de la vitesse du satellite. Le calcul_ se trouve dans la méthode ``Utils#getSatelliteSpeed``.
+  
+.. _calcul: https://lpenaud.github.io/satellites-beacons-master-degree/edu/ubo/satellitebeacons/main/simulation/utils/package-summary.html
 
 ------------
 Conclusion
 ------------
-Bogues connus, gestion d'événements, amélioration de la conception de mouvement.
+En conclusion, ce projet nous a permis d'apprendre la gestion des événements en Java, ainsi que son implémentations applicable dans d'autres langages.
+Si nous devions continuer le développment nous aurons corrigé un bogue qui immobilise certains éléments mobiles à partir d'un certains temps et de mieux cadrer l'utilisation l'interface ``Movement``.
