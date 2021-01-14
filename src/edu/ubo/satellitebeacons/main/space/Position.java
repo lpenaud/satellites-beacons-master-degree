@@ -7,8 +7,8 @@ public class Position {
 
   /**
    * Create a new 2d position.
-   * @param x
-   * @param y
+   * @param x Coordinated on the x-axis 
+   * @param y Coordinated on the y-axis 
    */
   public Position(final int x, final int y) {
     this.x = x;
