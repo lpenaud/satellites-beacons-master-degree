@@ -16,24 +16,24 @@ Le paquetage ``edu.ubo`` contient le code source du projet il est découpé en 2
   :backlinks: top
 
 ----------------------
-Gestion d'événements
+Gestion d'évènements
 ----------------------
-La partie création et logique des événements se trouve dans le paquetage ``edu.ubo.satelllitebeacons.main.event``.
+La partie création et logique des évènements se trouve dans le paquetage ``edu.ubo.satelllitebeacons.main.event``.
 
-Événements
+Évènements
 ============
-Touts les événements héritent de la classe ``java.util.EventObject``.
+Touts les évènements héritent de la classe ``java.util.EventObject``.
 
 - ``DestinationReachEvent`` est émis lorsque qu'un movement atteint sa destination.
 - ``FullCapacityEvent`` est émis lorsque la mémoire de la balise arrive à saturation.
 - ``MessageEvent`` est émis lorsqu'un message est envoyé par un port de communication.
-- ``PositionChangedEvent`` est émis par un élément mobile (satellite et balise) lorsque celui-ci change de position.
-- ``StartSyncEvent`` est émis par un élément mobile (satellite et balise) lorsque celui-ci commence une synchronisation avec un autre élément mobile.
-- ``StopSyncEvent`` est émis par un élément mobile (satellite et balise) lorsque celui-ci vient de finir une synchronisation avec un autre élément mobile.
+- ``PositionChangedEvent`` est émis par un élément mobile (satellite ou balise) lorsque celui-ci change de position.
+- ``StartSyncEvent`` est émis par un élément mobile (satellite ou balise) lorsque celui-ci commence une synchronisation avec un autre élément mobile.
+- ``StopSyncEvent`` est émis par un élément mobile (satellite ou balise) lorsque celui-ci vient de finir une synchronisation avec un autre élément mobile.
 
-Gestionnaire d'événement
+Gestionnaire d'évènement
 ===========================
-Pour faciliter l'émission d'événement, ainsi que l'ajout et la suppression des écouteurs il existe la classe ``EventManager``.
+Pour faciliter l'émission d'évènement, ainsi que l'ajout et la suppression des écouteurs il existe la classe ``EventManager``.
 
 .. caution::
 
@@ -55,13 +55,13 @@ Toutes les classes qui réprésentent un élément mobile héritent de la classe
 
 Balise
 ========
-La classe ``Beacon`` a pour but de simuler le comportement du balise.
+La classe ``Beacon`` a pour but de simuler le comportement d'une balise.
 
-Une balise est équipé de différents capteurs qui enregistrent des informations sur sa mémoire.
-Lorsque sa mémoire est pleine la balise doit retourner au niveau de la mer pour transférer son contenue à un satellite.
+Une balise est équipée de différents capteurs qui enregistrent des informations sur sa mémoire.
+Lorsque sa mémoire est pleine la balise doit retourner au niveau de la mer pour transférer son contenu à un satellite.
 
 Une balise est mis au courant des déplacements des satellites lorsque celle-ci écoute le port de communication ``Port<Satellite>``.
-En effet un satellite doit être suffisament près en axe `y` de la balise pour pouvoir assurer un transfère de données.
+En effet un satellite doit être suffisament proche en axe `y` de la balise pour pouvoir assurer un transfert de données.
 
 Satellite
 ===========
@@ -75,9 +75,9 @@ Movement
 Les éléments mobiles avec les déplacements respectent le patron de conception **Stratégie**.
 
 Un élément mobile a un déplacement représenté par l'interface ``Movement``.
-Les différentes implémentations de cette inferface permet de couvrir un maxium de stratégie de déplacement.
+Les différentes implémentations de cette inferface permettent de couvrir un maxium de stratégie de déplacement.
 
-L'interface ``DirectionalMovement`` représente un mouvement qui émet un événement lorsque l'élément mobile atteint sa destination prévus.
+L'interface ``DirectionalMovement`` représente un mouvement qui émet un évènement lorsque l'élément mobile atteint sa destination prévue.
 
 ----------------------------
 Représentation de l'espace
@@ -95,7 +95,7 @@ Point d'entrée de la simulation
 Dans le paquetage ``simulation`` on peut trouver :
 
 - La classe ``Simulation`` où se trouve le point d'entrée de la simulation.
-- Le paquetage ``components`` où se trouve les composants graphique qui écoutes les événements émis par les éléments mobiles.
+- Le paquetage ``components`` où se trouve les composants graphiques qui écoutent les évènements émis par les éléments mobiles.
 - Le paquetage ``utils`` où se trouve les différentes constantes de la simulation et des fonctions outils.
 
 Constantes
@@ -118,5 +118,5 @@ Il y a deux classes qui définissent les différentes constantes de la simulatio
 ------------
 Conclusion
 ------------
-En conclusion, ce projet nous a permis d'apprendre la gestion des événements en Java, ainsi que son implémentations applicable dans d'autres langages.
-Si nous devions continuer le développment nous aurons corrigé un bogue qui immobilise certains éléments mobiles à partir d'un certains temps et de mieux cadrer l'utilisation l'interface ``Movement``.
+En conclusion, ce projet nous a permis d'apprendre la gestion des évènements en Java, ainsi que son implémentation applicable dans d'autres langages.
+Si nous devions continuer le développment nous aurions corrigé un bogue qui immobilise certains éléments mobiles à partir d'un certains temps et de mieux cadrer l'utilisation l'interface ``Movement``.
