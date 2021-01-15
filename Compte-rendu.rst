@@ -98,6 +98,11 @@ Dans le paquetage ``simulation`` on peut trouver :
 - Le paquetage ``components`` où se trouve les composants graphiques qui écoutent les évènements émis par les éléments mobiles.
 - Le paquetage ``utils`` où se trouve les différentes constantes de la simulation et des fonctions outils.
 
+Parallèlisme
+==============
+La simulation exécute les différentes méthodes associées aux éléments mobiles de façon parallèles grâce au groupe de fils créer par l'objet ``ExecutorService``.
+Cette objet créer un nombre de fils égales au nombre de processeurs disponible sur l'ordinateur.
+
 Constantes
 ============
 Il y a deux classes qui définissent les différentes constantes de la simulation :
@@ -119,4 +124,5 @@ Il y a deux classes qui définissent les différentes constantes de la simulatio
 Conclusion
 ------------
 En conclusion, ce projet nous a permis d'apprendre la gestion des évènements en Java, ainsi que son implémentation applicable dans d'autres langages.
+De plus, ce projet nous a servis d'introduction à l'interface ``ExecutorService`` permettant d'exécuter des méthodes dans un contexte asynchrone et le tout en parallèle.
 Si nous devions continuer le développment nous aurions corrigé un bogue qui immobilise certains éléments mobiles à partir d'un certains temps et de mieux cadrer l'utilisation l'interface ``Movement``.
