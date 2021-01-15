@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="<p>fr</p>" xml:lang="<p>fr</p>">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Satellites et Balises</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <style>html{font-size:100%;overflow-y:scroll;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}body{color:#444;font-family:Georgia,Palatino,'Palatino Linotype',Times,'Times New Roman',serif;font-size:12px;line-height:1.7;padding:1em;margin:auto;max-width:42em;background:#fefefe}a{color:#0645ad;text-decoration:none}a:visited{color:#0b0080}a:hover{color:#06e}a:active{color:#faa700}a:focus{outline:thin dotted}::-moz-selection{background:rgba(255,255,0,.3);color:#000}::selection{background:rgba(255,255,0,.3);color:#000}a::-moz-selection{background:rgba(255,255,0,.3);color:#0645ad}a::selection{background:rgba(255,255,0,.3);color:#0645ad}p{margin:1em 0}img{max-width:100%}h1,h2,h3,h4,h5,h6{color:#111;line-height:125%;margin-top:2em;font-weight:400}h4,h5,h6{font-weight:700}h1{font-size:2.5em}h2{font-size:2em}h3{font-size:1.5em}h4{font-size:1.2em}h5{font-size:1em}h6{font-size:.9em}blockquote{color:#666;margin:0;padding-left:3em;border-left:.5em #eee solid}hr{display:block;height:2px;border:0;border-top:1px solid #aaa;border-bottom:1px solid #eee;margin:1em 0;padding:0}code,kbd,pre,samp{color:#000;font-family:monospace,monospace;font-size:.98em}pre{white-space:pre;white-space:pre-wrap;word-wrap:break-word}b,strong{font-weight:700}dfn{font-style:italic}ins{background:#ff9;color:#000;text-decoration:none}mark{background:#ff0;color:#000;font-style:italic;font-weight:700}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-.5em}sub{bottom:-.25em}ol,ul{margin:1em 0;padding:0 0 0 2em}li p:last-child{margin-bottom:0}ol ol,ul ul{margin:.3em 0}dl{margin-bottom:1em}dt{font-weight:700;margin-bottom:.8em}dd{margin:0 0 .8em 2em}dd:last-child{margin-bottom:0}img{border:0;-ms-interpolation-mode:bicubic;vertical-align:middle}figure{display:block;text-align:center;margin:1em 0}figure img{border:none;margin:0 auto}figcaption{font-size:.8em;font-style:italic;margin:0 0 .8em}table{margin-bottom:2em;border-bottom:1px solid #ddd;border-right:1px solid #ddd;border-spacing:0;border-collapse:collapse}table td,table th{padding:.2em 1em}table th{background-color:#eee;border-top:1px solid #ddd;border-left:1px solid #ddd;text-align:center;vertical-align:middle}table td{padding:.2em 1em;border-top:1px solid #ddd;border-left:1px solid #ddd}.author{font-size:1.2em;text-align:center}div.caution{color:#856404;background-color:#fff3cd;margin-bottom:2.5rem;border-radius:32px;padding:.5rem 1.25rem .25rem}div.caution>div.title{line-height:1.25em;margin-bottom:1.25em;font-weight:600}@media only screen and (min-width:480px){body{font-size:14px}}@media only screen and (min-width:768px){body{font-size:16px}}@media print{*{background:0 0!important;color:#000!important;filter:none!important;-ms-filter:none!important}body{font-size:12pt;max-width:100%}a,a:visited{text-decoration:underline}hr{height:1px;border:0;border-bottom:1px solid #000}a[href]:after{content:" (" attr(href) ")"}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="#"]:after,a[href^="javascript:"]:after{content:""}blockquote,pre{border:1px solid #999;padding-right:1em;page-break-inside:avoid}img,tr{page-break-inside:avoid}img{max-width:100%!important}@page :left{margin:15mm 20mm 15mm 10mm}@page :right{margin:15mm 10mm 15mm 20mm}h2,h3,p{orphans:3;widows:3}h2,h3{page-break-after:avoid}}</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Satellites et Balises</h1>
+<p class="author"><ul>
+<li>Penaud Loïc</li>
+<li>Metz Maxime</li>
+</ul></p>
+</header>
+<p>Le paquetage <code>edu.ubo</code> contient le code source du projet il est découpé en 2 grandes parties :</p>
+<ul>
+<li><code>edu.ubo.graphicLayer</code> : Bibliothèque graphique qu’on ne détaillera pas ici.</li>
+<li><code>edu.ubo.satelllitebeacons.main</code> : Code de source de la simulation.</li>
+</ul>
+<div class="contents" data-depth="3" data-backlinks="top">
+
+</div>
+<h1 id="gestion-dévènements">Gestion d’évènements</h1>
+<p>La partie création et logique des évènements se trouve dans le paquetage <code>edu.ubo.satelllitebeacons.main.event</code>.</p>
+<h2 id="évènements">Évènements</h2>
+<p>Touts les évènements héritent de la classe <code>java.util.EventObject</code>.</p>
+<ul>
+<li><code>DestinationReachEvent</code> est émis lorsque qu’un movement atteint sa destination.</li>
+<li><code>FullCapacityEvent</code> est émis lorsque la mémoire de la balise arrive à saturation.</li>
+<li><code>MessageEvent</code> est émis lorsqu’un message est envoyé par un port de communication.</li>
+<li><code>PositionChangedEvent</code> est émis par un élément mobile (satellite ou balise) lorsque celui-ci change de position.</li>
+<li><code>StartSyncEvent</code> est émis par un élément mobile (satellite ou balise) lorsque celui-ci commence une synchronisation avec un autre élément mobile.</li>
+<li><code>StopSyncEvent</code> est émis par un élément mobile (satellite ou balise) lorsque celui-ci vient de finir une synchronisation avec un autre élément mobile.</li>
+</ul>
+<h2 id="gestionnaire-dévènement">Gestionnaire d’évènement</h2>
+<p>Pour faciliter l’émission d’évènement, ainsi que l’ajout et la suppression des écouteurs il existe la classe <code>EventManager</code>.</p>
+<div class="caution">
+<div class="title">
+<p>Caution</p>
+</div>
+<p>Le manager référence les écouteurs en référence forte. Donc tout objet référencé par un écouteur ne sera pas supprimé même après le passage du ramasse-miettes.</p>
+</div>
+<h2 id="port-de-communication">Port de communication</h2>
+<p>La classe <code>chanel.Port</code> permet d’envoyer un message du type <code>&lt;T&gt;</code> à destination des écouteurs. Celle-ci est inspirée par <a href="https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API">l’API de canal de messagerie en JavaScript</a>.</p>
+<h1 id="élements-mobiles">Élements mobiles</h1>
+<p>Les éléments mobiles se trouvent dans le paquetage <code>movable</code>. Toutes les classes qui réprésentent un élément mobile héritent de la classe abstraite <code>Movable</code>.</p>
+<h2 id="balise">Balise</h2>
+<p>La classe <code>Beacon</code> a pour but de simuler le comportement d’une balise.</p>
+<p>Une balise est équipée de différents capteurs qui enregistrent des informations sur sa mémoire. Lorsque sa mémoire est pleine la balise doit retourner au niveau de la mer pour transférer son contenu à un satellite.</p>
+<p>Une balise est mis au courant des déplacements des satellites lorsque celle-ci écoute le port de communication <code>Port&lt;Satellite&gt;</code>. En effet un satellite doit être suffisament proche en axe <span class="title-ref">y</span> de la balise pour pouvoir assurer un transfert de données.</p>
+<h2 id="satellite">Satellite</h2>
+<p>La classe <code>Satellite</code> a pour but de simuler le comportement d’un satellite.</p>
+<p>Un satellite fait un mouvement horizontal, car il est en orbite dans l’espace. Il communique sa position via un port de communication, afin que la balise puisse transférer ses données.</p>
+<h2 id="movement">Movement</h2>
+<p>Les éléments mobiles avec les déplacements respectent le patron de conception <strong>Stratégie</strong>.</p>
+<p>Un élément mobile a un déplacement représenté par l’interface <code>Movement</code>. Les différentes implémentations de cette inferface permettent de couvrir un maxium de stratégie de déplacement.</p>
+<p>L’interface <code>DirectionalMovement</code> représente un mouvement qui émet un évènement lorsque l’élément mobile atteint sa destination prévue.</p>
+<h1 id="représentation-de-lespace">Représentation de l’espace</h1>
+<p>Les éléments mobiles se déplacement dans un espace en deux dimensions sur les axes <span class="title-ref">x</span> et <span class="title-ref">y</span>.</p>
+<p>Il existe deux classes pouvant assurer une cohérence de l’espace :</p>
+<ul>
+<li>La classe <code>Position</code> qui représente une position sur les axes <span class="title-ref">x</span> et <span class="title-ref">y</span>.</li>
+<li>La classe <code>Vector</code> qui représente un déplacement sur les axes <span class="title-ref">x</span> et <span class="title-ref">y</span></li>
+</ul>
+<h1 id="point-dentrée-de-la-simulation">Point d’entrée de la simulation</h1>
+<p>Dans le paquetage <code>simulation</code> on peut trouver :</p>
+<ul>
+<li>La classe <code>Simulation</code> où se trouve le point d’entrée de la simulation.</li>
+<li>Le paquetage <code>components</code> où se trouve les composants graphiques qui écoutent les évènements émis par les éléments mobiles.</li>
+<li>Le paquetage <code>utils</code> où se trouve les différentes constantes de la simulation et des fonctions outils.</li>
+</ul>
+<h2 id="parallèlisme">Parallèlisme</h2>
+<p>La simulation exécute les différentes méthodes associées aux éléments mobiles de façon parallèles grâce au groupe de fils créer par l’objet <code>ExecutorService</code>. Cette objet créer un nombre de fils égales au nombre de processeurs disponible sur l’ordinateur. Ci-dessous un diagramme de séquence UML de la simulation :</p>
+<p><img src="Thread.svg" alt="Si l’image ne s’affiche pas, elle se trouve dans le même dossier que ce document (`Thread.svg`)." /></p>
+<h2 id="constantes">Constantes</h2>
+<p>Il y a deux classes qui définissent les différentes constantes de la simulation :</p>
+<ul>
+<li><code>GConstants</code> qui contient les constantes en rapport avec la partie graphique de la simulation :
+<ul>
+<li><code>BEACON_PICTURE</code> : Chemin vers l’image représentant une balise.</li>
+<li><code>SATELLITE_PICTURE</code> : Chemin vers l’image représentant un satellite.</li>
+</ul></li>
+<li><code>Constants</code> qui contient les constantes en rapport avec la logique de la simulation.
+<ul>
+<li><code>SEA_LEVEL</code> : Nombre entier qui représente le niveau de la mer sur l’axe <span class="title-ref">y</span>.</li>
+<li><code>MIN_RADIUS</code> : Nombre entier représentant l’écart minimum de détection du satellite par la balise sur l’axe des <span class="title-ref">y</span> afin qu’ils puissent communiquer.</li>
+<li><code>MAX_RADIUS</code> : Nombre entier représentant l’écart maximum de détection du satellite par la balise sur l’axe des <span class="title-ref">y</span> afin qu’ils puissent communiquer.</li>
+<li><code>BEACON_SPEED</code> : Vitesse d’une balise.</li>
+<li><code>SATELLITE_MIN_SPEED</code> : Vitesse minimum du satellite.</li>
+<li><code>SATELLITE_SPEED_FACTOR</code> : Facteur de la vitesse du satellite. Le <a href="https://lpenaud.github.io/satellites-beacons-master-degree/edu/ubo/satellitebeacons/main/simulation/utils/package-summary.html">calcul</a> se trouve dans la méthode <code>Utils#getSatelliteSpeed</code>.</li>
+</ul></li>
+</ul>
+<h1 id="conclusion">Conclusion</h1>
+<p>En conclusion, ce projet nous a permis d’apprendre la gestion des évènements en Java, ainsi que son implémentation applicable dans d’autres langages. De plus, ce projet nous a servis d’introduction à l’interface <code>ExecutorService</code> permettant d’exécuter des méthodes dans un contexte asynchrone et le tout en parallèle. Si nous devions continuer le développment nous aurions corrigé un bogue qui immobilise certains éléments mobiles à partir d’un certains temps et de mieux cadrer l’utilisation l’interface <code>Movement</code>.</p>
+</body>
+</html>
