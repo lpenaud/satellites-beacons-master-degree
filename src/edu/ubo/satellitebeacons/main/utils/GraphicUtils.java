@@ -1,4 +1,4 @@
-package edu.ubo.satellitebeacons.main.simulation.utils;
+package edu.ubo.satellitebeacons.main.utils;
 
 import java.awt.Dimension;
 import java.io.File;

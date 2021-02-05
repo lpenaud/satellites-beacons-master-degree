@@ -5,7 +5,7 @@ import edu.ubo.satellitebeacons.main.event.FullCapacityEvent;
 import edu.ubo.satellitebeacons.main.event.StopSyncEvent;
 import edu.ubo.satellitebeacons.main.movable.Beacon;
 import edu.ubo.satellitebeacons.main.movable.Movable;
-import edu.ubo.satellitebeacons.main.simulation.utils.Constants;
+import edu.ubo.satellitebeacons.main.utils.Constants;
 
 public class StackMovement implements Movement {
   public static class Node {

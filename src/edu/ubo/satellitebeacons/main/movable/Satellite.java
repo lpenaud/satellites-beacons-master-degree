@@ -1,17 +1,19 @@
 package edu.ubo.satellitebeacons.main.movable;
 
+import edu.ubo.satellitebeacons.main.annotations.ScriptClass;
 import edu.ubo.satellitebeacons.main.event.PositionChangedEvent;
 import edu.ubo.satellitebeacons.main.event.StartSyncEvent;
 import edu.ubo.satellitebeacons.main.event.StopSyncEvent;
 import edu.ubo.satellitebeacons.main.event.chanel.Port;
 import edu.ubo.satellitebeacons.main.movable.movement.Movement;
 import edu.ubo.satellitebeacons.main.movable.movement.PrgmMovement;
-import edu.ubo.satellitebeacons.main.simulation.utils.Constants;
+import edu.ubo.satellitebeacons.main.utils.Constants;
 import edu.ubo.satellitebeacons.main.space.Position;
 
 /**
  * Simulate the satellite behavior.
  */
+@ScriptClass("Satellite")
 public class Satellite extends Movable {  
   
   /**

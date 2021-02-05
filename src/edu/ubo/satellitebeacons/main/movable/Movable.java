@@ -23,6 +23,7 @@ public abstract class Movable implements PositionChangedEmitter {
 
   /**
    * Get position of the movable.
+   * 
    * @return Position of the movable.
    */
   public Position getPosition() {
@@ -31,14 +32,16 @@ public abstract class Movable implements PositionChangedEmitter {
 
   /**
    * Set position of the movable.
+   * 
    * @param position The new position of the movable.
    */
   public void setPosition(final Position position) {
     this.position = position;
   }
-  
+
   /**
    * Move the movable according to its movement.
+   * 
    * @see Movement
    */
   public void move() {
@@ -48,14 +51,16 @@ public abstract class Movable implements PositionChangedEmitter {
 
   /**
    * Get the movement of the movable.
+   * 
    * @return The movement of the movable.
    */
   public Movement getMovement() {
     return movement;
   }
-  
+
   /**
    * Set the movement of the movable.
+   * 
    * @param movement The new movement to the movable.
    */
   public void setMovement(Movement movement) {
@@ -71,10 +76,16 @@ public abstract class Movable implements PositionChangedEmitter {
   public <E extends EventObject> Listener<E> removeEventListener(Class<E> event, Listener<E> l) {
     return listenerManager.removeEventListener(event, l);
   }
-  
+
   @Override
   public void emitPositionChanged() {
     this.listenerManager.emitEvent(new PositionChangedEvent(this, position));
+  }
+
+  @Override
+  public String toString() {
+    return new StringBuilder(super.toString()).append("{ position: ").append(position)
+        .append(", movement: ").append(movement).append(" }").toString();
   }
 
   protected final EventManager listenerManager;

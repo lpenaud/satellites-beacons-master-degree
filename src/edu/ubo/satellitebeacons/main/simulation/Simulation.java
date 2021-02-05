@@ -22,8 +22,8 @@ import edu.ubo.satellitebeacons.main.simulation.components.GBeacon;
 import edu.ubo.satellitebeacons.main.simulation.components.GMovable;
 import edu.ubo.satellitebeacons.main.simulation.components.GSatellite;
 import edu.ubo.satellitebeacons.main.simulation.components.GSea;
-import edu.ubo.satellitebeacons.main.simulation.utils.Constants;
-import edu.ubo.satellitebeacons.main.simulation.utils.Utils;
+import edu.ubo.satellitebeacons.main.utils.Constants;
+import edu.ubo.satellitebeacons.main.utils.Utils;
 import edu.ubo.satellitebeacons.main.space.Position;
 
 public class Simulation implements Runnable {

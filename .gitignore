@@ -1,1 +1,10 @@
+# Ignore files
 /bin/
+
+# Ignore generated files
+*.interp
+*.tokens
+*.interp
+
+# Ingore dependencies
+lib/*.jar
