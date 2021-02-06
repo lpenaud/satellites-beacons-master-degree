@@ -19,6 +19,18 @@ public class SatelliteBeaconBaseListener implements SatelliteBeaconListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterScript(SatelliteBeaconParser.ScriptContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitScript(SatelliteBeaconParser.ScriptContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCommand(SatelliteBeaconParser.CommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -115,6 +127,18 @@ public class SatelliteBeaconBaseListener implements SatelliteBeaconListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVariable(SatelliteBeaconParser.VariableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariable(SatelliteBeaconParser.VariableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterArgs(SatelliteBeaconParser.ArgsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -122,18 +146,6 @@ public class SatelliteBeaconBaseListener implements SatelliteBeaconListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArgs(SatelliteBeaconParser.ArgsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLastargs(SatelliteBeaconParser.LastargsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLastargs(SatelliteBeaconParser.LastargsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

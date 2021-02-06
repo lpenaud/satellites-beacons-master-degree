@@ -20,6 +20,13 @@ public class SatelliteBeaconBaseVisitor<T> extends AbstractParseTreeVisitor<T> i
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitScript(SatelliteBeaconParser.ScriptContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitCommand(SatelliteBeaconParser.CommandContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
@@ -76,14 +83,14 @@ public class SatelliteBeaconBaseVisitor<T> extends AbstractParseTreeVisitor<T> i
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArgs(SatelliteBeaconParser.ArgsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVariable(SatelliteBeaconParser.VariableContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLastargs(SatelliteBeaconParser.LastargsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArgs(SatelliteBeaconParser.ArgsContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -11,6 +11,16 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  */
 public interface SatelliteBeaconListener extends ParseTreeListener {
 	/**
+	 * Enter a parse tree produced by {@link SatelliteBeaconParser#script}.
+	 * @param ctx the parse tree
+	 */
+	void enterScript(SatelliteBeaconParser.ScriptContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SatelliteBeaconParser#script}.
+	 * @param ctx the parse tree
+	 */
+	void exitScript(SatelliteBeaconParser.ScriptContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SatelliteBeaconParser#command}.
 	 * @param ctx the parse tree
 	 */
@@ -91,6 +101,16 @@ public interface SatelliteBeaconListener extends ParseTreeListener {
 	 */
 	void exitCallable(SatelliteBeaconParser.CallableContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SatelliteBeaconParser#variable}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariable(SatelliteBeaconParser.VariableContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SatelliteBeaconParser#variable}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariable(SatelliteBeaconParser.VariableContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SatelliteBeaconParser#args}.
 	 * @param ctx the parse tree
 	 */
@@ -100,16 +120,6 @@ public interface SatelliteBeaconListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArgs(SatelliteBeaconParser.ArgsContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link SatelliteBeaconParser#lastargs}.
-	 * @param ctx the parse tree
-	 */
-	void enterLastargs(SatelliteBeaconParser.LastargsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link SatelliteBeaconParser#lastargs}.
-	 * @param ctx the parse tree
-	 */
-	void exitLastargs(SatelliteBeaconParser.LastargsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SatelliteBeaconParser#method}.
 	 * @param ctx the parse tree

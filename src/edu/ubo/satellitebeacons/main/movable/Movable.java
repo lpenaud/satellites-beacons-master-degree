@@ -1,6 +1,7 @@
 package edu.ubo.satellitebeacons.main.movable;
 
 import java.util.EventObject;
+import edu.ubo.satellitebeacons.main.annotations.ScriptGetter;
 import edu.ubo.satellitebeacons.main.event.PositionChangedEvent;
 import edu.ubo.satellitebeacons.main.event.emitter.PositionChangedEmitter;
 import edu.ubo.satellitebeacons.main.event.listener.Listener;
@@ -26,6 +27,7 @@ public abstract class Movable implements PositionChangedEmitter {
    * 
    * @return Position of the movable.
    */
+  @ScriptGetter("position")
   public Position getPosition() {
     return this.position;
   }
@@ -54,6 +56,7 @@ public abstract class Movable implements PositionChangedEmitter {
    * 
    * @return The movement of the movable.
    */
+  @ScriptGetter("movement")
   public Movement getMovement() {
     return movement;
   }
@@ -84,7 +87,7 @@ public abstract class Movable implements PositionChangedEmitter {
 
   @Override
   public String toString() {
-    return new StringBuilder(super.toString()).append("{ position: ").append(position)
+    return new StringBuilder(super.toString()).append("{position: ").append(position)
         .append(", movement: ").append(movement).append(" }").toString();
   }
 

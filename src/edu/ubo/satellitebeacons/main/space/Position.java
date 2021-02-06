@@ -1,5 +1,8 @@
 package edu.ubo.satellitebeacons.main.space;
 
+import edu.ubo.satellitebeacons.main.annotations.ScriptGetter;
+import edu.ubo.satellitebeacons.main.utils.PrettyFormatterEnum;
+
 /**
  * Represents a position in 2d.
  */
@@ -73,10 +76,10 @@ public class Position {
    * Get x coordinate.
    * @return x coordinate.
    */
-  public int getX() {
+  @ScriptGetter(value = "x", formatter = PrettyFormatterEnum.NB)
+  public Integer getX() {
     return x;
   }
-  
   
   public void setX(int x) {
 	this.x = x;
@@ -86,7 +89,8 @@ public class Position {
    * Get y coordinate.
    * @return y coordinate.
    */
-  public int getY() {
+  @ScriptGetter(value = "y", formatter = PrettyFormatterEnum.NB)
+  public Integer getY() {
     return y;
   }
   

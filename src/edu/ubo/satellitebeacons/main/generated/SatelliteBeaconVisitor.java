@@ -14,6 +14,12 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  */
 public interface SatelliteBeaconVisitor<T> extends ParseTreeVisitor<T> {
 	/**
+	 * Visit a parse tree produced by {@link SatelliteBeaconParser#script}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitScript(SatelliteBeaconParser.ScriptContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SatelliteBeaconParser#command}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -62,17 +68,17 @@ public interface SatelliteBeaconVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCallable(SatelliteBeaconParser.CallableContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SatelliteBeaconParser#variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariable(SatelliteBeaconParser.VariableContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SatelliteBeaconParser#args}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitArgs(SatelliteBeaconParser.ArgsContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link SatelliteBeaconParser#lastargs}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitLastargs(SatelliteBeaconParser.LastargsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SatelliteBeaconParser#method}.
 	 * @param ctx the parse tree
