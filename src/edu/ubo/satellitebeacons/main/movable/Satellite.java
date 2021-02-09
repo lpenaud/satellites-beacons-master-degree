@@ -14,10 +14,11 @@ import edu.ubo.satellitebeacons.main.space.Position;
  * Simulate the satellite behavior.
  */
 @ScriptClass("Satellite")
-public class Satellite extends Movable {  
-  
+public class Satellite extends Movable {
+
   /**
    * Create a new satellite with the given position and a communicate port.
+   * 
    * @param position Depart position of the satellite.
    * @param port Communicate port to send its position.
    */
@@ -30,6 +31,7 @@ public class Satellite extends Movable {
 
   /**
    * {@linkplain PositionChangedEvent} listener.
+   * 
    * @param event
    */
   public void onPositionChangedEvent(final PositionChangedEvent event) {
@@ -38,6 +40,7 @@ public class Satellite extends Movable {
 
   /**
    * Bacon and satellite communication.
+   * 
    * @param beacon Beacon with the full memory.
    */
   public void receive(final Beacon beacon) {
@@ -54,12 +57,13 @@ public class Satellite extends Movable {
 
   /**
    * {@linkplain StopSyncEvent} listener.
+   * 
    * @param event
    */
   public void onStopEvent(final StopSyncEvent event) {
     this.movement = this.oldMovement;
   }
-  
+
   protected final Port<Satellite> port;
   protected Movement oldMovement;
 }

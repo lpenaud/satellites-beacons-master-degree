@@ -4,21 +4,23 @@ grammar SatelliteBeacon;
 //
 }
 script: command*;
-command : (globals | affectation | callable | method | variable);
-globals : 'globals';
+command : (affectation | callable | method | variable | properties);
 
 // Variable
-affectation 		: affectationNb | affectationString | affectationInstance;
+affectation 		: affectationNb | affectationInstance;
 affectationNb 		: WORD '=' NB;
-affectationString 	: WORD '=' '"' STRING '"';
 affectationInstance : WORD '=' newInstance;
-newInstance 		: 'new' callable;
 callable 			: WORD '(' args? ')';
 variable			: WORD;
 
+// Objects
+newInstance 		: 'new' callable;
+method				: WORD? '.'? callable;
+property			: '.' WORD;
+properties			: WORD property+;
+
 // Args
-args 	: WORD '=' (NB | ( '"' STRING '"' )) (',' args*)?;
-method 	: WORD '.' callable;
+args 	: WORD '=' NB (',' args*)?;
 
 NB   	: [0-9]+; //number 
 WORD 	: [a-zA-Z]+ ;

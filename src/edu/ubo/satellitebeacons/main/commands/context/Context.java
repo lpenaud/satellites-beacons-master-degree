@@ -12,7 +12,6 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -21,21 +20,21 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import edu.ubo.satellitebeacons.main.annotations.ScriptClass;
 import edu.ubo.satellitebeacons.main.commands.Command;
 import edu.ubo.satellitebeacons.main.commands.context.ContextParameters.ClassEntry;
-import edu.ubo.satellitebeacons.main.commands.context.ContextParameters.ContextGlobalVar;
+import edu.ubo.satellitebeacons.main.commands.exceptions.ReferenceException;
+import edu.ubo.satellitebeacons.main.commands.exceptions.TypeException;
+import edu.ubo.satellitebeacons.main.commands.values.MapValue;
 import edu.ubo.satellitebeacons.main.commands.values.NumberValue;
 import edu.ubo.satellitebeacons.main.commands.values.ObjectValue;
-import edu.ubo.satellitebeacons.main.commands.values.StringValue;
 import edu.ubo.satellitebeacons.main.commands.values.Value;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconBaseVisitor;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconLexer;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.AffectationInstanceContext;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.AffectationNbContext;
-import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.AffectationStringContext;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.ArgsContext;
-import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.GlobalsContext;
+import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.MethodContext;
+import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.PropertiesContext;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.VariableContext;
-import edu.ubo.satellitebeacons.main.utils.PrettyFormatterEnum;
 
 public class Context extends SatelliteBeaconBaseVisitor<Object> implements Callable<Void> {
   static class Line {
@@ -71,26 +70,13 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
     this.stderr = parameters.getStderr();
     this.stdin = new BufferedReader(new InputStreamReader(parameters.getStdin()));
     this.addClasses(parameters.getClasses());
-    Stream.of(parameters.getGlobals()).forEach(this::addGlobal);
+    parameters.getGlobals().forEach(this::addGlobal);
+    this.addGlobal("global", new MapValue("Global", variables));
   }
 
-  public void addGlobal(final ContextGlobalVar<?> globalVar) {
-    this.variables.put(globalVar.getName(), globalVar.getValue());
-    this.reservedWords.add(globalVar.getName());
-  }
-
-  public void addGlobal(final String name, final Object value) {
-    this.addGlobal(new ContextGlobalVar<Object>() {
-      @Override
-      public String getName() {
-        return name;
-      }
-
-      @Override
-      public Value<Object> getValue() {
-        return new ObjectValue(value);
-      }
-    });
+  public void addGlobal(final String name, final Value<?> value) {
+    this.variables.put(name, value);
+    this.reservedWords.add(name);
   }
 
   public void addClasses(final ClassEntry<Object>[] entries) throws Exception {
@@ -128,28 +114,11 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
   }
 
   @Override
-  public Object visitGlobals(GlobalsContext ctx) {
-    this.variables.entrySet().stream().filter(entry -> this.reservedWords.contains(entry.getKey()))
-        .forEach(entry -> this.stdout.println(new StringBuilder(entry.getKey()).append("=")
-            .append(this.formatPrint(entry.getValue()))));
-    return super.visitGlobals(ctx);
-  }
-
-  @Override
-  public Object visitAffectationString(AffectationStringContext ctx) {
-    final String name = ctx.WORD().getText();
-    final String value = ctx.STRING().getText();
-    this.variables.put(name, new StringValue(value));
-    this.stdout.println(PrettyFormatterEnum.NB.format(value));
-    return super.visitAffectationString(ctx);
-  }
-
-  @Override
   public Object visitAffectationNb(AffectationNbContext ctx) {
-    final String name = ctx.WORD().getText();
-    final int value = Integer.parseInt(ctx.NB().getText());
-    this.variables.put(name, new NumberValue(value));
-    this.stdout.println(value);
+    final var name = ctx.WORD().getText();
+    final var value = new NumberValue(Integer.parseInt(ctx.NB().getText()));
+    this.variables.put(name, value);
+    this.stdout.println(value.pretty());
     return super.visitAffectationNb(ctx);
   }
 
@@ -159,7 +128,7 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
     final var className = callableCtx.WORD().getText();
     final var construtor = this.classes.get(className);
     if (construtor == null) {
-      return this.printError(new ClassNotFoundException(new StringBuilder("Class \"")
+      return this.printException(new ClassNotFoundException(new StringBuilder("Class \"")
           .append(className).append("\" is unknow in this context").toString()));
     }
     final Map<String, String> argsMap;
@@ -173,7 +142,7 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
     final var name = ctx.WORD().getText();
     final var value = new ObjectValue(construtor.call(argsMap));
     this.variables.put(name, value);
-    this.stdout.println(value);
+    this.stdout.println(value.pretty());
     return super.visitAffectationInstance(ctx);
   }
 
@@ -181,8 +150,39 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
   public Object visitVariable(VariableContext ctx) {
     final var name = ctx.WORD().getText();
     final var value = this.variables.getOrDefault(name, Value.UNDEFINED_VALUE);
-    this.stdout.println(value);
+    this.stdout.println(value.pretty());
     return super.visitVariable(ctx);
+  }
+  
+  @Override
+  public Object visitProperties(PropertiesContext ctx) {
+    var name = ctx.WORD().getText();
+    Value<?> obj = this.variables.getOrDefault(name, Value.UNDEFINED_VALUE);
+    final var props = ctx.property();
+    try {
+      for (int i = 0; i < props.size(); i++) {
+        name = props.get(i).WORD().getText();
+        obj = obj.getProperty(name);
+        if (obj == null) {
+          return this.printException(new TypeException(name));
+        }
+      }
+    } catch (TypeException e) {
+      return this.printException(e);
+    }
+    this.stdout.println(obj.pretty());
+    return super.visitProperties(ctx);
+  }
+
+  @Override
+  public Object visitMethod(MethodContext ctx) {
+    // final var objName = ctx.WORD() != null ? ctx.WORD().getText() : "this";
+    // final var obj = this.variables.get(objName);
+    // if (obj == null) {
+    // this.printError(new TypeException(objName));
+    // }
+    // final var method = ctx.callable().WORD();
+    return super.visitMethod(ctx);
   }
 
   protected String getArgName(final ArgsContext ctx) {
@@ -190,17 +190,10 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
   }
 
   protected String getArgValue(final ArgsContext ctx) {
-    return ctx.NB() != null ? ctx.NB().getText() : ctx.STRING().getText();
+    return ctx.NB().getText();
   }
 
-  protected CharSequence formatPrint(final Object o) {
-    if (o instanceof CharSequence) {
-      return new StringBuilder().append('"').append(o).append('"');
-    }
-    return o.toString();
-  }
-
-  protected Object printError(final Exception e) {
+  protected Object printException(final Exception e) {
     this.stderr.println(
         new StringBuilder(e.getClass().getSimpleName()).append(": ").append(e.getMessage()));
     return null;

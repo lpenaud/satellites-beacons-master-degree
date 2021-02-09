@@ -46,7 +46,9 @@ public final class Utils {
       return "null";
     }
     final var anno = o.getClass().getAnnotation(ScriptClass.class);
-    final var builder = new StringBuilder(anno != null ? anno.value() : o.getClass().getSimpleName()).append(" {\n");
+    final var builder =
+        new StringBuilder(anno != null ? anno.value() : o.getClass().getSimpleName())
+            .append(" {\n");
     final var res =
         Stream.of(o.getClass().getMethods()).filter(m -> m.isAnnotationPresent(ScriptGetter.class))
             .map(m -> prettyPrint(o, m, level + 1)).collect(Collectors.joining(",\n"));
@@ -55,15 +57,14 @@ public final class Utils {
 
   public static CharSequence prettyPrint(final Object o, final Method method, final int level) {
     final var anno = method.getAnnotation(ScriptGetter.class);
-    final var builder = new StringBuilder(printTab(level))
-        .append(anno.value()).append(": ");
+    final var builder = new StringBuilder(printTab(level)).append(anno.value()).append(": ");
     try {
       final var value = method.invoke(o);
       if (value == null) {
         return builder.append(value);
       }
       if (anno.formatter().length == 0) {
-        return builder.append(prettyPrint(value, level + 1));        
+        return builder.append(prettyPrint(value, level + 1));
       }
       return builder.append(anno.formatter()[0].format(value));
     } catch (final IllegalAccessException | IllegalArgumentException
@@ -78,6 +79,15 @@ public final class Utils {
       builder.append(" ");
     }
     return builder;
+  }
+
+  public static String join(final Object... objects) {
+    return join(",", objects);
+  }
+
+  public static String join(final CharSequence sep, final Object... objects) {
+    return Stream.of(objects).collect(new CollectorsUtils<>(StringBuilder::new,
+        StringBuilder::append, (r1, r2) -> r1.append(sep).append(r2), StringBuilder::toString));
   }
 
   private Utils() {}

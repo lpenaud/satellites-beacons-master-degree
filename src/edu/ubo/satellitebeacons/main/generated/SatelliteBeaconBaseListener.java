@@ -43,18 +43,6 @@ public class SatelliteBeaconBaseListener implements SatelliteBeaconListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterGlobals(SatelliteBeaconParser.GlobalsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitGlobals(SatelliteBeaconParser.GlobalsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterAffectation(SatelliteBeaconParser.AffectationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -79,18 +67,6 @@ public class SatelliteBeaconBaseListener implements SatelliteBeaconListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAffectationString(SatelliteBeaconParser.AffectationStringContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAffectationString(SatelliteBeaconParser.AffectationStringContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterAffectationInstance(SatelliteBeaconParser.AffectationInstanceContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -98,18 +74,6 @@ public class SatelliteBeaconBaseListener implements SatelliteBeaconListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitAffectationInstance(SatelliteBeaconParser.AffectationInstanceContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNewInstance(SatelliteBeaconParser.NewInstanceContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNewInstance(SatelliteBeaconParser.NewInstanceContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -139,13 +103,13 @@ public class SatelliteBeaconBaseListener implements SatelliteBeaconListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArgs(SatelliteBeaconParser.ArgsContext ctx) { }
+	@Override public void enterNewInstance(SatelliteBeaconParser.NewInstanceContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArgs(SatelliteBeaconParser.ArgsContext ctx) { }
+	@Override public void exitNewInstance(SatelliteBeaconParser.NewInstanceContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -158,6 +122,42 @@ public class SatelliteBeaconBaseListener implements SatelliteBeaconListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMethod(SatelliteBeaconParser.MethodContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterProperty(SatelliteBeaconParser.PropertyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProperty(SatelliteBeaconParser.PropertyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterProperties(SatelliteBeaconParser.PropertiesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProperties(SatelliteBeaconParser.PropertiesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArgs(SatelliteBeaconParser.ArgsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArgs(SatelliteBeaconParser.ArgsContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
