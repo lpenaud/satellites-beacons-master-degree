@@ -7,6 +7,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -20,7 +21,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import edu.ubo.satellitebeacons.main.annotations.ScriptClass;
 import edu.ubo.satellitebeacons.main.commands.Command;
 import edu.ubo.satellitebeacons.main.commands.context.ContextParameters.ClassEntry;
-import edu.ubo.satellitebeacons.main.commands.exceptions.ReferenceException;
 import edu.ubo.satellitebeacons.main.commands.exceptions.TypeException;
 import edu.ubo.satellitebeacons.main.commands.values.MapValue;
 import edu.ubo.satellitebeacons.main.commands.values.NumberValue;
@@ -32,8 +32,11 @@ import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.AffectationInstanceContext;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.AffectationNbContext;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.ArgsContext;
-import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.MethodContext;
+import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.CallableContext;
+import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.NewInstanceContext;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.PropertiesContext;
+import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.PropertyContext;
+import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.SetterInstanceContext;
 import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.VariableContext;
 
 public class Context extends SatelliteBeaconBaseVisitor<Object> implements Callable<Void> {
@@ -124,25 +127,14 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
 
   @Override
   public Object visitAffectationInstance(AffectationInstanceContext ctx) {
-    final var callableCtx = ctx.newInstance().callable();
-    final var className = callableCtx.WORD().getText();
-    final var construtor = this.classes.get(className);
-    if (construtor == null) {
-      return this.printException(new ClassNotFoundException(new StringBuilder("Class \"")
-          .append(className).append("\" is unknow in this context").toString()));
-    }
-    final Map<String, String> argsMap;
-    if (callableCtx.args() != null) {
-      argsMap = callableCtx.args().args().stream()
-          .collect(Collectors.toMap(this::getArgName, this::getArgValue));
-      argsMap.put(this.getArgName(callableCtx.args()), this.getArgValue(callableCtx.args()));
-    } else {
-      argsMap = new HashMap<>(0);
-    }
-    final var name = ctx.WORD().getText();
-    final var value = new ObjectValue(construtor.call(argsMap));
-    this.variables.put(name, value);
-    this.stdout.println(value.pretty());
+	try {
+		final var name = ctx.WORD().getText();
+		final Value<?> value = this.newInstance(ctx.newInstance());
+		this.variables.put(name, value);
+		this.stdout.println(value.pretty());
+	} catch (ClassNotFoundException e) {
+		this.printException(e);
+	}
     return super.visitAffectationInstance(ctx);
   }
 
@@ -156,34 +148,24 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
   
   @Override
   public Object visitProperties(PropertiesContext ctx) {
-    var name = ctx.WORD().getText();
-    Value<?> obj = this.variables.getOrDefault(name, Value.UNDEFINED_VALUE);
-    final var props = ctx.property();
     try {
-      for (int i = 0; i < props.size(); i++) {
-        name = props.get(i).WORD().getText();
-        obj = obj.getProperty(name);
-        if (obj == null) {
-          return this.printException(new TypeException(name));
-        }
-      }
+      final Value<?> obj = this.getProperty(ctx.WORD().getText(), ctx.property());
+      this.stdout.println(obj.pretty());      
     } catch (TypeException e) {
-      return this.printException(e);
+      this.printException(e);
     }
-    this.stdout.println(obj.pretty());
     return super.visitProperties(ctx);
   }
-
+  
   @Override
-  public Object visitMethod(MethodContext ctx) {
-    // final var objName = ctx.WORD() != null ? ctx.WORD().getText() : "this";
-    // final var obj = this.variables.get(objName);
-    // if (obj == null) {
-    // this.printError(new TypeException(objName));
-    // }
-    // final var method = ctx.callable().WORD();
-    return super.visitMethod(ctx);
-  }
+	public Object visitSetterInstance(SetterInstanceContext ctx) {
+	  try {
+		final var instance = this.newInstance(ctx.newInstance());
+	} catch (ClassNotFoundException e) {
+		this.printException(e);
+	}
+		return super.visitSetterInstance(ctx);
+	}
 
   protected String getArgName(final ArgsContext ctx) {
     return ctx.WORD().getText();
@@ -197,6 +179,34 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
     this.stderr.println(
         new StringBuilder(e.getClass().getSimpleName()).append(": ").append(e.getMessage()));
     return null;
+  }
+  
+  protected Value<?> newInstance(final NewInstanceContext ctx) throws ClassNotFoundException {
+	  final var callableCtx = ctx.callable();
+	    final var className = callableCtx.WORD().getText();
+	    final var construtor = this.classes.get(className);
+	    if (construtor == null) {
+	    	throw new ClassNotFoundException(new StringBuilder("Class \"")
+	  	          .append(className).append("\" is unknow in this context").toString());
+	    }
+	    final Map<String, String> argsMap;
+	    if (callableCtx.args() != null) {
+	      argsMap = callableCtx.args().args().stream()
+	          .collect(Collectors.toMap(this::getArgName, this::getArgValue));
+	      argsMap.put(this.getArgName(callableCtx.args()), this.getArgValue(callableCtx.args()));
+	    } else {
+	      argsMap = new HashMap<>(0);
+	    }
+	    return new ObjectValue(construtor.call(argsMap));
+  }
+  
+  protected Value<?> getProperty(String name, final List<PropertyContext> props) throws TypeException {
+	  Value<?> obj = this.variables.getOrDefault(name, Value.UNDEFINED_VALUE);
+      for (int i = 0; i < props.size(); i++) {
+          name = props.get(i).WORD().getText();
+          obj = obj.getAttribute(name);
+        }
+      return obj;
   }
 
   protected Iterator<Line> lineIterator() {

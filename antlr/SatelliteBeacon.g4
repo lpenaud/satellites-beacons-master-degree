@@ -4,7 +4,7 @@ grammar SatelliteBeacon;
 //
 }
 script: command*;
-command : (affectation | callable | method | variable | properties);
+command : (affectation | callable | variable | properties | setter);
 
 // Variable
 affectation 		: affectationNb | affectationInstance;
@@ -15,9 +15,11 @@ variable			: WORD;
 
 // Objects
 newInstance 		: 'new' callable;
-method				: WORD? '.'? callable;
 property			: '.' WORD;
 properties			: WORD property+;
+setter				: setterNb | setterInstance;
+setterNb 			: WORD property+ '=' NB;
+setterInstance		: WORD property+ '=' newInstance;
 
 // Args
 args 	: WORD '=' NB (',' args*)?;

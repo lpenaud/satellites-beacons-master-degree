@@ -25,12 +25,13 @@ public class SatelliteBeaconParser extends Parser {
 	public static final int
 		RULE_script = 0, RULE_command = 1, RULE_affectation = 2, RULE_affectationNb = 3, 
 		RULE_affectationInstance = 4, RULE_callable = 5, RULE_variable = 6, RULE_newInstance = 7, 
-		RULE_method = 8, RULE_property = 9, RULE_properties = 10, RULE_args = 11;
+		RULE_property = 8, RULE_properties = 9, RULE_setter = 10, RULE_setterNb = 11, 
+		RULE_setterInstance = 12, RULE_args = 13;
 	private static String[] makeRuleNames() {
 		return new String[] {
 			"script", "command", "affectation", "affectationNb", "affectationInstance", 
-			"callable", "variable", "newInstance", "method", "property", "properties", 
-			"args"
+			"callable", "variable", "newInstance", "property", "properties", "setter", 
+			"setterNb", "setterInstance", "args"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -109,14 +110,6 @@ public class SatelliteBeaconParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_script; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterScript(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitScript(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitScript(this);
 			else return visitor.visitChildren(this);
@@ -130,17 +123,17 @@ public class SatelliteBeaconParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(27);
+			setState(31);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__4 || _la==WORD) {
+			while (_la==WORD) {
 				{
 				{
-				setState(24);
+				setState(28);
 				command();
 				}
 				}
-				setState(29);
+				setState(33);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -164,27 +157,19 @@ public class SatelliteBeaconParser extends Parser {
 		public CallableContext callable() {
 			return getRuleContext(CallableContext.class,0);
 		}
-		public MethodContext method() {
-			return getRuleContext(MethodContext.class,0);
-		}
 		public VariableContext variable() {
 			return getRuleContext(VariableContext.class,0);
 		}
 		public PropertiesContext properties() {
 			return getRuleContext(PropertiesContext.class,0);
 		}
+		public SetterContext setter() {
+			return getRuleContext(SetterContext.class,0);
+		}
 		public CommandContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_command; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterCommand(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitCommand(this);
-		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitCommand(this);
@@ -198,37 +183,37 @@ public class SatelliteBeaconParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(35);
+			setState(39);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 			case 1:
 				{
-				setState(30);
+				setState(34);
 				affectation();
 				}
 				break;
 			case 2:
 				{
-				setState(31);
+				setState(35);
 				callable();
 				}
 				break;
 			case 3:
 				{
-				setState(32);
-				method();
+				setState(36);
+				variable();
 				}
 				break;
 			case 4:
 				{
-				setState(33);
-				variable();
+				setState(37);
+				properties();
 				}
 				break;
 			case 5:
 				{
-				setState(34);
-				properties();
+				setState(38);
+				setter();
 				}
 				break;
 			}
@@ -257,14 +242,6 @@ public class SatelliteBeaconParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_affectation; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterAffectation(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitAffectation(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitAffectation(this);
 			else return visitor.visitChildren(this);
@@ -275,20 +252,20 @@ public class SatelliteBeaconParser extends Parser {
 		AffectationContext _localctx = new AffectationContext(_ctx, getState());
 		enterRule(_localctx, 4, RULE_affectation);
 		try {
-			setState(39);
+			setState(43);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(37);
+				setState(41);
 				affectationNb();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(38);
+				setState(42);
 				affectationInstance();
 				}
 				break;
@@ -313,14 +290,6 @@ public class SatelliteBeaconParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_affectationNb; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterAffectationNb(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitAffectationNb(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitAffectationNb(this);
 			else return visitor.visitChildren(this);
@@ -333,11 +302,11 @@ public class SatelliteBeaconParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(41);
+			setState(45);
 			match(WORD);
-			setState(42);
+			setState(46);
 			match(T__0);
-			setState(43);
+			setState(47);
 			match(NB);
 			}
 		}
@@ -362,14 +331,6 @@ public class SatelliteBeaconParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_affectationInstance; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterAffectationInstance(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitAffectationInstance(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitAffectationInstance(this);
 			else return visitor.visitChildren(this);
@@ -382,11 +343,11 @@ public class SatelliteBeaconParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(45);
+			setState(49);
 			match(WORD);
-			setState(46);
+			setState(50);
 			match(T__0);
-			setState(47);
+			setState(51);
 			newInstance();
 			}
 		}
@@ -411,14 +372,6 @@ public class SatelliteBeaconParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_callable; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterCallable(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitCallable(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitCallable(this);
 			else return visitor.visitChildren(this);
@@ -432,21 +385,21 @@ public class SatelliteBeaconParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(49);
+			setState(53);
 			match(WORD);
-			setState(50);
+			setState(54);
 			match(T__1);
-			setState(52);
+			setState(56);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WORD) {
 				{
-				setState(51);
+				setState(55);
 				args();
 				}
 			}
 
-			setState(54);
+			setState(58);
 			match(T__2);
 			}
 		}
@@ -468,14 +421,6 @@ public class SatelliteBeaconParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_variable; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterVariable(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitVariable(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitVariable(this);
 			else return visitor.visitChildren(this);
@@ -488,7 +433,7 @@ public class SatelliteBeaconParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(56);
+			setState(60);
 			match(WORD);
 			}
 		}
@@ -512,14 +457,6 @@ public class SatelliteBeaconParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_newInstance; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterNewInstance(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitNewInstance(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitNewInstance(this);
 			else return visitor.visitChildren(this);
@@ -532,75 +469,9 @@ public class SatelliteBeaconParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(58);
-			match(T__3);
-			setState(59);
-			callable();
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class MethodContext extends ParserRuleContext {
-		public CallableContext callable() {
-			return getRuleContext(CallableContext.class,0);
-		}
-		public TerminalNode WORD() { return getToken(SatelliteBeaconParser.WORD, 0); }
-		public MethodContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_method; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterMethod(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitMethod(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitMethod(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-
-	public final MethodContext method() throws RecognitionException {
-		MethodContext _localctx = new MethodContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_method);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
 			setState(62);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
-			case 1:
-				{
-				setState(61);
-				match(WORD);
-				}
-				break;
-			}
-			setState(65);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==T__4) {
-				{
-				setState(64);
-				match(T__4);
-				}
-			}
-
-			setState(67);
+			match(T__3);
+			setState(63);
 			callable();
 			}
 		}
@@ -622,14 +493,6 @@ public class SatelliteBeaconParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_property; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterProperty(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitProperty(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitProperty(this);
 			else return visitor.visitChildren(this);
@@ -638,13 +501,13 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final PropertyContext property() throws RecognitionException {
 		PropertyContext _localctx = new PropertyContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_property);
+		enterRule(_localctx, 16, RULE_property);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(69);
+			setState(65);
 			match(T__4);
-			setState(70);
+			setState(66);
 			match(WORD);
 			}
 		}
@@ -672,14 +535,6 @@ public class SatelliteBeaconParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_properties; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterProperties(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitProperties(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitProperties(this);
 			else return visitor.visitChildren(this);
@@ -688,33 +543,201 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final PropertiesContext properties() throws RecognitionException {
 		PropertiesContext _localctx = new PropertiesContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_properties);
+		enterRule(_localctx, 18, RULE_properties);
+		int _la;
 		try {
-			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(72);
+			setState(68);
 			match(WORD);
-			setState(74); 
+			setState(70); 
 			_errHandler.sync(this);
-			_alt = 1;
+			_la = _input.LA(1);
 			do {
-				switch (_alt) {
-				case 1:
-					{
-					{
-					setState(73);
-					property();
-					}
-					}
-					break;
-				default:
-					throw new NoViableAltException(this);
+				{
+				{
+				setState(69);
+				property();
 				}
-				setState(76); 
+				}
+				setState(72); 
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
-			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+				_la = _input.LA(1);
+			} while ( _la==T__4 );
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class SetterContext extends ParserRuleContext {
+		public SetterNbContext setterNb() {
+			return getRuleContext(SetterNbContext.class,0);
+		}
+		public SetterInstanceContext setterInstance() {
+			return getRuleContext(SetterInstanceContext.class,0);
+		}
+		public SetterContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_setter; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitSetter(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final SetterContext setter() throws RecognitionException {
+		SetterContext _localctx = new SetterContext(_ctx, getState());
+		enterRule(_localctx, 20, RULE_setter);
+		try {
+			setState(76);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
+			case 1:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(74);
+				setterNb();
+				}
+				break;
+			case 2:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(75);
+				setterInstance();
+				}
+				break;
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class SetterNbContext extends ParserRuleContext {
+		public TerminalNode WORD() { return getToken(SatelliteBeaconParser.WORD, 0); }
+		public TerminalNode NB() { return getToken(SatelliteBeaconParser.NB, 0); }
+		public List<PropertyContext> property() {
+			return getRuleContexts(PropertyContext.class);
+		}
+		public PropertyContext property(int i) {
+			return getRuleContext(PropertyContext.class,i);
+		}
+		public SetterNbContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_setterNb; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitSetterNb(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final SetterNbContext setterNb() throws RecognitionException {
+		SetterNbContext _localctx = new SetterNbContext(_ctx, getState());
+		enterRule(_localctx, 22, RULE_setterNb);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(78);
+			match(WORD);
+			setState(80); 
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			do {
+				{
+				{
+				setState(79);
+				property();
+				}
+				}
+				setState(82); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			} while ( _la==T__4 );
+			setState(84);
+			match(T__0);
+			setState(85);
+			match(NB);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class SetterInstanceContext extends ParserRuleContext {
+		public TerminalNode WORD() { return getToken(SatelliteBeaconParser.WORD, 0); }
+		public NewInstanceContext newInstance() {
+			return getRuleContext(NewInstanceContext.class,0);
+		}
+		public List<PropertyContext> property() {
+			return getRuleContexts(PropertyContext.class);
+		}
+		public PropertyContext property(int i) {
+			return getRuleContext(PropertyContext.class,i);
+		}
+		public SetterInstanceContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_setterInstance; }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitSetterInstance(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final SetterInstanceContext setterInstance() throws RecognitionException {
+		SetterInstanceContext _localctx = new SetterInstanceContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_setterInstance);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(87);
+			match(WORD);
+			setState(89); 
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			do {
+				{
+				{
+				setState(88);
+				property();
+				}
+				}
+				setState(91); 
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+			} while ( _la==T__4 );
+			setState(93);
+			match(T__0);
+			setState(94);
+			newInstance();
 			}
 		}
 		catch (RecognitionException re) {
@@ -742,14 +765,6 @@ public class SatelliteBeaconParser extends Parser {
 		}
 		@Override public int getRuleIndex() { return RULE_args; }
 		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterArgs(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitArgs(this);
-		}
-		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitArgs(this);
 			else return visitor.visitChildren(this);
@@ -758,40 +773,40 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final ArgsContext args() throws RecognitionException {
 		ArgsContext _localctx = new ArgsContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_args);
+		enterRule(_localctx, 26, RULE_args);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(78);
+			setState(96);
 			match(WORD);
-			setState(79);
+			setState(97);
 			match(T__0);
-			setState(80);
+			setState(98);
 			match(NB);
-			setState(88);
+			setState(106);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__5) {
 				{
-				setState(81);
+				setState(99);
 				match(T__5);
-				setState(85);
+				setState(103);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
 				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(82);
+						setState(100);
 						args();
 						}
 						} 
 					}
-					setState(87);
+					setState(105);
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,8,_ctx);
 				}
 				}
 			}
@@ -810,28 +825,32 @@ public class SatelliteBeaconParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\f]\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\fo\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
-		"\f\t\f\4\r\t\r\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\3\3\3\3\3\3\3\3\3\5\3"+
-		"&\n\3\3\4\3\4\5\4*\n\4\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\5\7"+
-		"\67\n\7\3\7\3\7\3\b\3\b\3\t\3\t\3\t\3\n\5\nA\n\n\3\n\5\nD\n\n\3\n\3\n"+
-		"\3\13\3\13\3\13\3\f\3\f\6\fM\n\f\r\f\16\fN\3\r\3\r\3\r\3\r\3\r\7\rV\n"+
-		"\r\f\r\16\rY\13\r\5\r[\n\r\3\r\2\2\16\2\4\6\b\n\f\16\20\22\24\26\30\2"+
-		"\2\2\\\2\35\3\2\2\2\4%\3\2\2\2\6)\3\2\2\2\b+\3\2\2\2\n/\3\2\2\2\f\63\3"+
-		"\2\2\2\16:\3\2\2\2\20<\3\2\2\2\22@\3\2\2\2\24G\3\2\2\2\26J\3\2\2\2\30"+
-		"P\3\2\2\2\32\34\5\4\3\2\33\32\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36"+
-		"\3\2\2\2\36\3\3\2\2\2\37\35\3\2\2\2 &\5\6\4\2!&\5\f\7\2\"&\5\22\n\2#&"+
-		"\5\16\b\2$&\5\26\f\2% \3\2\2\2%!\3\2\2\2%\"\3\2\2\2%#\3\2\2\2%$\3\2\2"+
-		"\2&\5\3\2\2\2\'*\5\b\5\2(*\5\n\6\2)\'\3\2\2\2)(\3\2\2\2*\7\3\2\2\2+,\7"+
-		"\n\2\2,-\7\3\2\2-.\7\t\2\2.\t\3\2\2\2/\60\7\n\2\2\60\61\7\3\2\2\61\62"+
-		"\5\20\t\2\62\13\3\2\2\2\63\64\7\n\2\2\64\66\7\4\2\2\65\67\5\30\r\2\66"+
-		"\65\3\2\2\2\66\67\3\2\2\2\678\3\2\2\289\7\5\2\29\r\3\2\2\2:;\7\n\2\2;"+
-		"\17\3\2\2\2<=\7\6\2\2=>\5\f\7\2>\21\3\2\2\2?A\7\n\2\2@?\3\2\2\2@A\3\2"+
-		"\2\2AC\3\2\2\2BD\7\7\2\2CB\3\2\2\2CD\3\2\2\2DE\3\2\2\2EF\5\f\7\2F\23\3"+
-		"\2\2\2GH\7\7\2\2HI\7\n\2\2I\25\3\2\2\2JL\7\n\2\2KM\5\24\13\2LK\3\2\2\2"+
-		"MN\3\2\2\2NL\3\2\2\2NO\3\2\2\2O\27\3\2\2\2PQ\7\n\2\2QR\7\3\2\2RZ\7\t\2"+
-		"\2SW\7\b\2\2TV\5\30\r\2UT\3\2\2\2VY\3\2\2\2WU\3\2\2\2WX\3\2\2\2X[\3\2"+
-		"\2\2YW\3\2\2\2ZS\3\2\2\2Z[\3\2\2\2[\31\3\2\2\2\13\35%)\66@CNWZ";
+		"\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\3\2\7\2 \n\2\f\2\16\2#\13\2\3\3\3\3"+
+		"\3\3\3\3\3\3\5\3*\n\3\3\4\3\4\5\4.\n\4\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6"+
+		"\3\7\3\7\3\7\5\7;\n\7\3\7\3\7\3\b\3\b\3\t\3\t\3\t\3\n\3\n\3\n\3\13\3\13"+
+		"\6\13I\n\13\r\13\16\13J\3\f\3\f\5\fO\n\f\3\r\3\r\6\rS\n\r\r\r\16\rT\3"+
+		"\r\3\r\3\r\3\16\3\16\6\16\\\n\16\r\16\16\16]\3\16\3\16\3\16\3\17\3\17"+
+		"\3\17\3\17\3\17\7\17h\n\17\f\17\16\17k\13\17\5\17m\n\17\3\17\2\2\20\2"+
+		"\4\6\b\n\f\16\20\22\24\26\30\32\34\2\2\2m\2!\3\2\2\2\4)\3\2\2\2\6-\3\2"+
+		"\2\2\b/\3\2\2\2\n\63\3\2\2\2\f\67\3\2\2\2\16>\3\2\2\2\20@\3\2\2\2\22C"+
+		"\3\2\2\2\24F\3\2\2\2\26N\3\2\2\2\30P\3\2\2\2\32Y\3\2\2\2\34b\3\2\2\2\36"+
+		" \5\4\3\2\37\36\3\2\2\2 #\3\2\2\2!\37\3\2\2\2!\"\3\2\2\2\"\3\3\2\2\2#"+
+		"!\3\2\2\2$*\5\6\4\2%*\5\f\7\2&*\5\16\b\2\'*\5\24\13\2(*\5\26\f\2)$\3\2"+
+		"\2\2)%\3\2\2\2)&\3\2\2\2)\'\3\2\2\2)(\3\2\2\2*\5\3\2\2\2+.\5\b\5\2,.\5"+
+		"\n\6\2-+\3\2\2\2-,\3\2\2\2.\7\3\2\2\2/\60\7\n\2\2\60\61\7\3\2\2\61\62"+
+		"\7\t\2\2\62\t\3\2\2\2\63\64\7\n\2\2\64\65\7\3\2\2\65\66\5\20\t\2\66\13"+
+		"\3\2\2\2\678\7\n\2\28:\7\4\2\29;\5\34\17\2:9\3\2\2\2:;\3\2\2\2;<\3\2\2"+
+		"\2<=\7\5\2\2=\r\3\2\2\2>?\7\n\2\2?\17\3\2\2\2@A\7\6\2\2AB\5\f\7\2B\21"+
+		"\3\2\2\2CD\7\7\2\2DE\7\n\2\2E\23\3\2\2\2FH\7\n\2\2GI\5\22\n\2HG\3\2\2"+
+		"\2IJ\3\2\2\2JH\3\2\2\2JK\3\2\2\2K\25\3\2\2\2LO\5\30\r\2MO\5\32\16\2NL"+
+		"\3\2\2\2NM\3\2\2\2O\27\3\2\2\2PR\7\n\2\2QS\5\22\n\2RQ\3\2\2\2ST\3\2\2"+
+		"\2TR\3\2\2\2TU\3\2\2\2UV\3\2\2\2VW\7\3\2\2WX\7\t\2\2X\31\3\2\2\2Y[\7\n"+
+		"\2\2Z\\\5\22\n\2[Z\3\2\2\2\\]\3\2\2\2][\3\2\2\2]^\3\2\2\2^_\3\2\2\2_`"+
+		"\7\3\2\2`a\5\20\t\2a\33\3\2\2\2bc\7\n\2\2cd\7\3\2\2dl\7\t\2\2ei\7\b\2"+
+		"\2fh\5\34\17\2gf\3\2\2\2hk\3\2\2\2ig\3\2\2\2ij\3\2\2\2jm\3\2\2\2ki\3\2"+
+		"\2\2le\3\2\2\2lm\3\2\2\2m\35\3\2\2\2\f!)-:JNT]il";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -1,5 +1,7 @@
 package edu.ubo.satellitebeacons.main.commands.values;
 
+import java.util.Map;
+
 import edu.ubo.satellitebeacons.main.commands.exceptions.TypeException;
 
 public interface Value<T> {  
@@ -9,7 +11,7 @@ public interface Value<T> {
       return null;
     }
     
-    public Value<?> getProperty(final String name) throws TypeException {
+    public Value<?> getAttribute(final String name) throws TypeException {
       throw new TypeException(String.format("Cannot read property '%s' of undefined", name));
     }
 
@@ -19,11 +21,22 @@ public interface Value<T> {
     }
   };
   
-  Value<?> getProperty(String attribute) throws TypeException;
+  Value<?> getAttribute(String attribute) throws TypeException;
+  default Value<?> setAttribute(String attribute, Value<?> value) throws TypeException {
+	  throw new TypeException("");
+  }
   T getValue();
   CharSequence pretty(int level);
 
   default CharSequence pretty() {
     return this.pretty(0);
+  }
+  
+  default boolean isCallable() {
+	  return false;
+  }
+  
+  default Value<?> call(String attribute, Map<String, String> args) throws TypeException {
+	  throw new TypeException(String.format("%s is not a callable", attribute));
   }
 }

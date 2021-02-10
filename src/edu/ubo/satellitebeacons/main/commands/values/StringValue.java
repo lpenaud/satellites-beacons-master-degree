@@ -15,7 +15,7 @@ public class StringValue implements Value<String> {
   }
 
   @Override
-  public Value<?> getProperty(final String attribute) throws TypeException {
+  public Value<?> getAttribute(final String attribute) throws TypeException {
     final var property = PROPERTIES.get(attribute);
     if (property == null) {
       return Value.UNDEFINED_VALUE;

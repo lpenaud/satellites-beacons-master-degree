@@ -12,6 +12,7 @@ import edu.ubo.satellitebeacons.main.utils.PrettyFormatterEnum;
 @Target(METHOD)
 public @interface ScriptGetter {
   String value();
+  String setter() default "";
   PrettyFormatterEnum[] formatter() default {};
   Class<? extends Value<?>> wrapper() default ObjectValue.class;
 }

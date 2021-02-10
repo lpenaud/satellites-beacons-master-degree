@@ -32,7 +32,7 @@ public class MapValue implements Value<Map<String, Value<?>>> {
   }
 
   @Override
-  public Value<?> getProperty(String attribute) throws TypeException {
+  public Value<?> getAttribute(String attribute) throws TypeException {
     return this.value.getOrDefault(attribute, Value.UNDEFINED_VALUE);
   }
 

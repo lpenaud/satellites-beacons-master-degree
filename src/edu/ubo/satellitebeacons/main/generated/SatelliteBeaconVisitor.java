@@ -62,12 +62,6 @@ public interface SatelliteBeaconVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNewInstance(SatelliteBeaconParser.NewInstanceContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SatelliteBeaconParser#method}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMethod(SatelliteBeaconParser.MethodContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link SatelliteBeaconParser#property}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -79,6 +73,24 @@ public interface SatelliteBeaconVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitProperties(SatelliteBeaconParser.PropertiesContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SatelliteBeaconParser#setter}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSetter(SatelliteBeaconParser.SetterContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SatelliteBeaconParser#setterNb}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSetterNb(SatelliteBeaconParser.SetterNbContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SatelliteBeaconParser#setterInstance}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSetterInstance(SatelliteBeaconParser.SetterInstanceContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SatelliteBeaconParser#args}.
 	 * @param ctx the parse tree
