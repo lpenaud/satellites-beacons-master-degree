@@ -20,7 +20,6 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import edu.ubo.satellitebeacons.main.annotations.ScriptClass;
 import edu.ubo.satellitebeacons.main.commands.Command;
 import edu.ubo.satellitebeacons.main.commands.context.ContextParameters.ClassEntry;
-import edu.ubo.satellitebeacons.main.commands.exceptions.ReferenceException;
 import edu.ubo.satellitebeacons.main.commands.exceptions.TypeException;
 import edu.ubo.satellitebeacons.main.commands.values.MapValue;
 import edu.ubo.satellitebeacons.main.commands.values.NumberValue;
@@ -149,7 +148,7 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
   @Override
   public Object visitVariable(VariableContext ctx) {
     final var name = ctx.WORD().getText();
-    final var value = this.variables.getOrDefault(name, Value.UNDEFINED_VALUE);
+    final var value = this.variables.getOrDefault(name, Value.UNDEFINED);
     this.stdout.println(value.pretty());
     return super.visitVariable(ctx);
   }
@@ -157,7 +156,7 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
   @Override
   public Object visitProperties(PropertiesContext ctx) {
     var name = ctx.WORD().getText();
-    Value<?> obj = this.variables.getOrDefault(name, Value.UNDEFINED_VALUE);
+    Value<?> obj = this.variables.getOrDefault(name, Value.UNDEFINED);
     final var props = ctx.property();
     try {
       for (int i = 0; i < props.size(); i++) {

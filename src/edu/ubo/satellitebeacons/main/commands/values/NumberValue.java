@@ -21,7 +21,7 @@ public class NumberValue implements Value<Number> {
   
   @Override
   public Value<?> getProperty(final String attribute) throws TypeException {
-    return Value.UNDEFINED_VALUE;
+    return Value.UNDEFINED;
   }
 
   protected final Number value;

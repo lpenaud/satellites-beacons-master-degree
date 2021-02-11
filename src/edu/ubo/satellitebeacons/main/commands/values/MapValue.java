@@ -20,9 +20,9 @@ public class MapValue implements Value<Map<String, Value<?>>> {
   @Override
   public CharSequence pretty(final int level) {
     return new StringBuilder(Utils.printTab(level)).append(name).append(" {\n")
-        .append(
-            value.entrySet().stream().map(entry -> prettyPrint(entry.getKey(), entry.getValue(), level + 1))
-                .collect(Collectors.joining(",\n")))
+        .append(value.entrySet().stream()
+            .map(entry -> prettyPrint(entry.getKey(), entry.getValue(), level + 1))
+            .collect(Collectors.joining(",\n")))
         .append("\n}").toString();
   }
 
@@ -33,7 +33,7 @@ public class MapValue implements Value<Map<String, Value<?>>> {
 
   @Override
   public Value<?> getProperty(String attribute) throws TypeException {
-    return this.value.getOrDefault(attribute, Value.UNDEFINED_VALUE);
+    return this.value.getOrDefault(attribute, Value.UNDEFINED);
   }
 
   protected final Map<String, Value<?>> value;

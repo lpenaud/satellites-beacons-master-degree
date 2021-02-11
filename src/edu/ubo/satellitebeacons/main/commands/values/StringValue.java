@@ -6,21 +6,11 @@ import edu.ubo.satellitebeacons.main.commands.exceptions.TypeException;
 import edu.ubo.satellitebeacons.main.utils.PrettyFormatterEnum;
 
 public class StringValue implements Value<String> {
-  public static final Map<String, Function<StringValue, Value<?>>> PROPERTIES = Map.of(
-      "length", StringValue::lengthValue
-  );
+  public static final Map<String, Function<StringValue, Value<?>>> PROPERTIES =
+      Map.of("length", StringValue::lengthValue);
 
   public StringValue(final String value) {
     this.value = value;
-  }
-
-  @Override
-  public Value<?> getProperty(final String attribute) throws TypeException {
-    final var property = PROPERTIES.get(attribute);
-    if (property == null) {
-      return Value.UNDEFINED_VALUE;
-    }
-    return property.apply(this);
   }
 
   @Override
@@ -31,6 +21,15 @@ public class StringValue implements Value<String> {
   @Override
   public CharSequence pretty(int level) {
     return PrettyFormatterEnum.STRING.format(value);
+  }
+
+  @Override
+  public Value<?> getProperty(final String attribute) throws TypeException {
+    final var property = PROPERTIES.get(attribute);
+    if (property == null) {
+      return Value.UNDEFINED;
+    }
+    return property.apply(this);
   }
 
   public Value<Number> lengthValue() {
