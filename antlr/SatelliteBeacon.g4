@@ -4,11 +4,13 @@ grammar SatelliteBeacon;
 //
 }
 script: command*;
-command : (affectation | callable | method | variable | properties);
+command : (affectation | globalCallable | method | variable | properties);
+
+globalCallable 		: callable;
 
 // Variable
 affectation 		: affectationNb | affectationInstance;
-affectationNb 		: WORD '=' NB;
+affectationNb 		: WORD '=' WORD;
 affectationInstance : WORD '=' newInstance;
 callable 			: WORD '(' args? ')';
 variable			: WORD;
@@ -20,9 +22,7 @@ property			: '.' WORD;
 properties			: WORD property+;
 
 // Args
-args 	: WORD '=' NB (',' args*)?;
+args 	: WORD '=' WORD (',' args*)?;
 
-NB   	: [0-9]+; //number 
-WORD 	: [a-zA-Z]+ ;
-STRING 	: [A-Z];
+WORD	: [a-zA-Z][0-9a-zA-Z]*;
 WS   	: [ \t\r\n]+ -> skip ;

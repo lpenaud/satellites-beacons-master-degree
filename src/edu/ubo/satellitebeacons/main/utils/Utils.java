@@ -1,5 +1,6 @@
 package edu.ubo.satellitebeacons.main.utils;
 
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.lang.reflect.InvocationTargetException;
@@ -10,6 +11,7 @@ import edu.ubo.satellitebeacons.main.space.Position;
 
 public final class Utils {
   public static final int TAB_LEN = 2;
+  public static final Random RANDOM = new Random();
 
   /**
    * Get satellite speed according to its position.
@@ -27,6 +29,14 @@ public final class Utils {
       builder.append(" ");
     }
     return builder;
+  }
+  
+  public static int parseIntOrDefault(final Object o, final int d) {
+    try {
+      return parseIntOrDefault(o.toString(), d);      
+    } catch (Exception e) {
+      return d;
+    }
   }
 
   public static int parseIntOrDefault(final String s, final int d) {
@@ -88,6 +98,27 @@ public final class Utils {
   public static String join(final CharSequence sep, final Object... objects) {
     return Stream.of(objects).collect(new CollectorsUtils<>(StringBuilder::new,
         StringBuilder::append, (r1, r2) -> r1.append(sep).append(r2), StringBuilder::toString));
+  }
+  
+  @SafeVarargs
+  public static <T> T getRandom(final T...ts) {
+    return ts[Math.abs(RANDOM.nextInt()) % ts.length];
+  }
+  
+  public static int parseIntOrRandom(final String s, final Integer...intergers) {
+    try {
+      return Integer.parseInt(s);
+    } catch (NumberFormatException e) {
+      return getRandom(intergers);
+    }
+  }
+  
+  public static int parseIntOrRandom(final Object o, final Integer...intergers) {
+    try {
+      return parseIntOrRandom(o.toString(), intergers);      
+    } catch (Exception e) {
+      return getRandom(intergers);
+    }
   }
 
   private Utils() {}

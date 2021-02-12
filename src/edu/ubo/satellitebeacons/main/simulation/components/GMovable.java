@@ -3,7 +3,6 @@ package edu.ubo.satellitebeacons.main.simulation.components;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Stroke;
 import java.util.function.Consumer;
@@ -11,6 +10,7 @@ import edu.ubo.graphicLayer.GRect;
 import edu.ubo.satellitebeacons.main.event.PositionChangedEvent;
 import edu.ubo.satellitebeacons.main.event.StartSyncEvent;
 import edu.ubo.satellitebeacons.main.event.StopSyncEvent;
+import edu.ubo.satellitebeacons.main.utils.GraphicUtils;
 
 /**
  * Basic graphic element which represents a movable.
@@ -37,7 +37,7 @@ public class GMovable extends GRect {
    * @param event
    */
   public void onPositionChangedEvent(final PositionChangedEvent event) {
-    this.setPosition(new Point(event.getPosition().getX(), event.getPosition().getY()));
+    this.setPosition(GraphicUtils.positionToPoint(event.getPosition()));
     this.repaint();
   }
   

@@ -4,9 +4,14 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import edu.ubo.satellitebeacons.main.commands.Command;
 import edu.ubo.satellitebeacons.main.movable.Beacon;
 import edu.ubo.satellitebeacons.main.movable.Satellite;
+import edu.ubo.satellitebeacons.main.movable.movement.HorizontalMovement;
+import edu.ubo.satellitebeacons.main.movable.movement.SimpleHorizontalMovement;
+import edu.ubo.satellitebeacons.main.simulation.Simulation;
 import edu.ubo.satellitebeacons.main.commands.constructors.Constructors;
 import edu.ubo.satellitebeacons.main.commands.values.StringValue;
 import edu.ubo.satellitebeacons.main.commands.values.Value;
@@ -58,15 +63,25 @@ public interface ContextParameters {
   @SuppressWarnings("unchecked")
   default ClassEntry<Object>[] getClasses() {
     final var constructors = new Constructors();
-    final var classes = new ClassEntry[2];
-    classes[0] = new ClassEntryImpl<>(Satellite.class, constructors::newSatellite);
-    classes[1] = new ClassEntryImpl<>(Beacon.class, constructors::newBeacon);
-    return classes;
+    return new ClassEntry[] {
+      new ClassEntryImpl<>(Satellite.class, constructors::newSatellite),
+      new ClassEntryImpl<>(Beacon.class, constructors::newBeacon),
+      new ClassEntryImpl<>(HorizontalMovement.class, constructors::newHorizontalMovement),
+      new ClassEntryImpl<>(SimpleHorizontalMovement.class, constructors::newVerticalMovement)
+    };
   }
 
   default Map<String, Value<?>> getGlobals() {
     final var map = new HashMap<String, Value<?>>(1);
     map.put("PWD", new StringValue(System.getProperty("user.dir")));
     return map;
+  }
+  
+  default Simulation getSimulation() {
+    return new Simulation();
+  }
+  
+  default ExecutorService getExecutor() {
+    return Executors.newSingleThreadExecutor();
   }
 }

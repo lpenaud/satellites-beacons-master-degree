@@ -20,17 +20,17 @@ public class SatelliteBeaconParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, NB=7, WORD=8, STRING=9, 
-		WS=10;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, WORD=7, WS=8;
 	public static final int
-		RULE_script = 0, RULE_command = 1, RULE_affectation = 2, RULE_affectationNb = 3, 
-		RULE_affectationInstance = 4, RULE_callable = 5, RULE_variable = 6, RULE_newInstance = 7, 
-		RULE_method = 8, RULE_property = 9, RULE_properties = 10, RULE_args = 11;
+		RULE_script = 0, RULE_command = 1, RULE_globalCallable = 2, RULE_affectation = 3, 
+		RULE_affectationNb = 4, RULE_affectationInstance = 5, RULE_callable = 6, 
+		RULE_variable = 7, RULE_newInstance = 8, RULE_method = 9, RULE_property = 10, 
+		RULE_properties = 11, RULE_args = 12;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"script", "command", "affectation", "affectationNb", "affectationInstance", 
-			"callable", "variable", "newInstance", "method", "property", "properties", 
-			"args"
+			"script", "command", "globalCallable", "affectation", "affectationNb", 
+			"affectationInstance", "callable", "variable", "newInstance", "method", 
+			"property", "properties", "args"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -43,7 +43,7 @@ public class SatelliteBeaconParser extends Parser {
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, "NB", "WORD", "STRING", "WS"
+			null, null, null, null, null, null, null, "WORD", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -130,17 +130,17 @@ public class SatelliteBeaconParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(27);
+			setState(29);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__4 || _la==WORD) {
 				{
 				{
-				setState(24);
+				setState(26);
 				command();
 				}
 				}
-				setState(29);
+				setState(31);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -161,8 +161,8 @@ public class SatelliteBeaconParser extends Parser {
 		public AffectationContext affectation() {
 			return getRuleContext(AffectationContext.class,0);
 		}
-		public CallableContext callable() {
-			return getRuleContext(CallableContext.class,0);
+		public GlobalCallableContext globalCallable() {
+			return getRuleContext(GlobalCallableContext.class,0);
 		}
 		public MethodContext method() {
 			return getRuleContext(MethodContext.class,0);
@@ -198,40 +198,84 @@ public class SatelliteBeaconParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(35);
+			setState(37);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
 			case 1:
 				{
-				setState(30);
+				setState(32);
 				affectation();
 				}
 				break;
 			case 2:
 				{
-				setState(31);
-				callable();
+				setState(33);
+				globalCallable();
 				}
 				break;
 			case 3:
 				{
-				setState(32);
+				setState(34);
 				method();
 				}
 				break;
 			case 4:
 				{
-				setState(33);
+				setState(35);
 				variable();
 				}
 				break;
 			case 5:
 				{
-				setState(34);
+				setState(36);
 				properties();
 				}
 				break;
 			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class GlobalCallableContext extends ParserRuleContext {
+		public CallableContext callable() {
+			return getRuleContext(CallableContext.class,0);
+		}
+		public GlobalCallableContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_globalCallable; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).enterGlobalCallable(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof SatelliteBeaconListener ) ((SatelliteBeaconListener)listener).exitGlobalCallable(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof SatelliteBeaconVisitor ) return ((SatelliteBeaconVisitor<? extends T>)visitor).visitGlobalCallable(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final GlobalCallableContext globalCallable() throws RecognitionException {
+		GlobalCallableContext _localctx = new GlobalCallableContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_globalCallable);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(39);
+			callable();
 			}
 		}
 		catch (RecognitionException re) {
@@ -273,22 +317,22 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final AffectationContext affectation() throws RecognitionException {
 		AffectationContext _localctx = new AffectationContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_affectation);
+		enterRule(_localctx, 6, RULE_affectation);
 		try {
-			setState(39);
+			setState(43);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(37);
+				setState(41);
 				affectationNb();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(38);
+				setState(42);
 				affectationInstance();
 				}
 				break;
@@ -306,8 +350,10 @@ public class SatelliteBeaconParser extends Parser {
 	}
 
 	public static class AffectationNbContext extends ParserRuleContext {
-		public TerminalNode WORD() { return getToken(SatelliteBeaconParser.WORD, 0); }
-		public TerminalNode NB() { return getToken(SatelliteBeaconParser.NB, 0); }
+		public List<TerminalNode> WORD() { return getTokens(SatelliteBeaconParser.WORD); }
+		public TerminalNode WORD(int i) {
+			return getToken(SatelliteBeaconParser.WORD, i);
+		}
 		public AffectationNbContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -329,16 +375,16 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final AffectationNbContext affectationNb() throws RecognitionException {
 		AffectationNbContext _localctx = new AffectationNbContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_affectationNb);
+		enterRule(_localctx, 8, RULE_affectationNb);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(41);
+			setState(45);
 			match(WORD);
-			setState(42);
+			setState(46);
 			match(T__0);
-			setState(43);
-			match(NB);
+			setState(47);
+			match(WORD);
 			}
 		}
 		catch (RecognitionException re) {
@@ -378,15 +424,15 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final AffectationInstanceContext affectationInstance() throws RecognitionException {
 		AffectationInstanceContext _localctx = new AffectationInstanceContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_affectationInstance);
+		enterRule(_localctx, 10, RULE_affectationInstance);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(45);
+			setState(49);
 			match(WORD);
-			setState(46);
+			setState(50);
 			match(T__0);
-			setState(47);
+			setState(51);
 			newInstance();
 			}
 		}
@@ -427,26 +473,26 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final CallableContext callable() throws RecognitionException {
 		CallableContext _localctx = new CallableContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_callable);
+		enterRule(_localctx, 12, RULE_callable);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(49);
+			setState(53);
 			match(WORD);
-			setState(50);
+			setState(54);
 			match(T__1);
-			setState(52);
+			setState(56);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==WORD) {
 				{
-				setState(51);
+				setState(55);
 				args();
 				}
 			}
 
-			setState(54);
+			setState(58);
 			match(T__2);
 			}
 		}
@@ -484,11 +530,11 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final VariableContext variable() throws RecognitionException {
 		VariableContext _localctx = new VariableContext(_ctx, getState());
-		enterRule(_localctx, 12, RULE_variable);
+		enterRule(_localctx, 14, RULE_variable);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(56);
+			setState(60);
 			match(WORD);
 			}
 		}
@@ -528,13 +574,13 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final NewInstanceContext newInstance() throws RecognitionException {
 		NewInstanceContext _localctx = new NewInstanceContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_newInstance);
+		enterRule(_localctx, 16, RULE_newInstance);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(58);
+			setState(62);
 			match(T__3);
-			setState(59);
+			setState(63);
 			callable();
 			}
 		}
@@ -575,32 +621,32 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final MethodContext method() throws RecognitionException {
 		MethodContext _localctx = new MethodContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_method);
+		enterRule(_localctx, 18, RULE_method);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(62);
+			setState(66);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				{
-				setState(61);
+				setState(65);
 				match(WORD);
 				}
 				break;
 			}
-			setState(65);
+			setState(69);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__4) {
 				{
-				setState(64);
+				setState(68);
 				match(T__4);
 				}
 			}
 
-			setState(67);
+			setState(71);
 			callable();
 			}
 		}
@@ -638,13 +684,13 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final PropertyContext property() throws RecognitionException {
 		PropertyContext _localctx = new PropertyContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_property);
+		enterRule(_localctx, 20, RULE_property);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(69);
+			setState(73);
 			match(T__4);
-			setState(70);
+			setState(74);
 			match(WORD);
 			}
 		}
@@ -688,14 +734,14 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final PropertiesContext properties() throws RecognitionException {
 		PropertiesContext _localctx = new PropertiesContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_properties);
+		enterRule(_localctx, 22, RULE_properties);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(72);
+			setState(76);
 			match(WORD);
-			setState(74); 
+			setState(78); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
@@ -703,7 +749,7 @@ public class SatelliteBeaconParser extends Parser {
 				case 1:
 					{
 					{
-					setState(73);
+					setState(77);
 					property();
 					}
 					}
@@ -711,7 +757,7 @@ public class SatelliteBeaconParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(76); 
+				setState(80); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,6,_ctx);
 			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
@@ -729,8 +775,10 @@ public class SatelliteBeaconParser extends Parser {
 	}
 
 	public static class ArgsContext extends ParserRuleContext {
-		public TerminalNode WORD() { return getToken(SatelliteBeaconParser.WORD, 0); }
-		public TerminalNode NB() { return getToken(SatelliteBeaconParser.NB, 0); }
+		public List<TerminalNode> WORD() { return getTokens(SatelliteBeaconParser.WORD); }
+		public TerminalNode WORD(int i) {
+			return getToken(SatelliteBeaconParser.WORD, i);
+		}
 		public List<ArgsContext> args() {
 			return getRuleContexts(ArgsContext.class);
 		}
@@ -758,38 +806,38 @@ public class SatelliteBeaconParser extends Parser {
 
 	public final ArgsContext args() throws RecognitionException {
 		ArgsContext _localctx = new ArgsContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_args);
+		enterRule(_localctx, 24, RULE_args);
 		int _la;
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(78);
+			setState(82);
 			match(WORD);
-			setState(79);
+			setState(83);
 			match(T__0);
-			setState(80);
-			match(NB);
-			setState(88);
+			setState(84);
+			match(WORD);
+			setState(92);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==T__5) {
 				{
-				setState(81);
-				match(T__5);
 				setState(85);
+				match(T__5);
+				setState(89);
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
 				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(82);
+						setState(86);
 						args();
 						}
 						} 
 					}
-					setState(87);
+					setState(91);
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,7,_ctx);
 				}
@@ -810,28 +858,29 @@ public class SatelliteBeaconParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\f]\4\2\t\2\4\3\t"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\na\4\2\t\2\4\3\t"+
 		"\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4"+
-		"\f\t\f\4\r\t\r\3\2\7\2\34\n\2\f\2\16\2\37\13\2\3\3\3\3\3\3\3\3\3\3\5\3"+
-		"&\n\3\3\4\3\4\5\4*\n\4\3\5\3\5\3\5\3\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\5\7"+
-		"\67\n\7\3\7\3\7\3\b\3\b\3\t\3\t\3\t\3\n\5\nA\n\n\3\n\5\nD\n\n\3\n\3\n"+
-		"\3\13\3\13\3\13\3\f\3\f\6\fM\n\f\r\f\16\fN\3\r\3\r\3\r\3\r\3\r\7\rV\n"+
-		"\r\f\r\16\rY\13\r\5\r[\n\r\3\r\2\2\16\2\4\6\b\n\f\16\20\22\24\26\30\2"+
-		"\2\2\\\2\35\3\2\2\2\4%\3\2\2\2\6)\3\2\2\2\b+\3\2\2\2\n/\3\2\2\2\f\63\3"+
-		"\2\2\2\16:\3\2\2\2\20<\3\2\2\2\22@\3\2\2\2\24G\3\2\2\2\26J\3\2\2\2\30"+
-		"P\3\2\2\2\32\34\5\4\3\2\33\32\3\2\2\2\34\37\3\2\2\2\35\33\3\2\2\2\35\36"+
-		"\3\2\2\2\36\3\3\2\2\2\37\35\3\2\2\2 &\5\6\4\2!&\5\f\7\2\"&\5\22\n\2#&"+
-		"\5\16\b\2$&\5\26\f\2% \3\2\2\2%!\3\2\2\2%\"\3\2\2\2%#\3\2\2\2%$\3\2\2"+
-		"\2&\5\3\2\2\2\'*\5\b\5\2(*\5\n\6\2)\'\3\2\2\2)(\3\2\2\2*\7\3\2\2\2+,\7"+
-		"\n\2\2,-\7\3\2\2-.\7\t\2\2.\t\3\2\2\2/\60\7\n\2\2\60\61\7\3\2\2\61\62"+
-		"\5\20\t\2\62\13\3\2\2\2\63\64\7\n\2\2\64\66\7\4\2\2\65\67\5\30\r\2\66"+
-		"\65\3\2\2\2\66\67\3\2\2\2\678\3\2\2\289\7\5\2\29\r\3\2\2\2:;\7\n\2\2;"+
-		"\17\3\2\2\2<=\7\6\2\2=>\5\f\7\2>\21\3\2\2\2?A\7\n\2\2@?\3\2\2\2@A\3\2"+
-		"\2\2AC\3\2\2\2BD\7\7\2\2CB\3\2\2\2CD\3\2\2\2DE\3\2\2\2EF\5\f\7\2F\23\3"+
-		"\2\2\2GH\7\7\2\2HI\7\n\2\2I\25\3\2\2\2JL\7\n\2\2KM\5\24\13\2LK\3\2\2\2"+
-		"MN\3\2\2\2NL\3\2\2\2NO\3\2\2\2O\27\3\2\2\2PQ\7\n\2\2QR\7\3\2\2RZ\7\t\2"+
-		"\2SW\7\b\2\2TV\5\30\r\2UT\3\2\2\2VY\3\2\2\2WU\3\2\2\2WX\3\2\2\2X[\3\2"+
-		"\2\2YW\3\2\2\2ZS\3\2\2\2Z[\3\2\2\2[\31\3\2\2\2\13\35%)\66@CNWZ";
+		"\f\t\f\4\r\t\r\4\16\t\16\3\2\7\2\36\n\2\f\2\16\2!\13\2\3\3\3\3\3\3\3\3"+
+		"\3\3\5\3(\n\3\3\4\3\4\3\5\3\5\5\5.\n\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7"+
+		"\3\b\3\b\3\b\5\b;\n\b\3\b\3\b\3\t\3\t\3\n\3\n\3\n\3\13\5\13E\n\13\3\13"+
+		"\5\13H\n\13\3\13\3\13\3\f\3\f\3\f\3\r\3\r\6\rQ\n\r\r\r\16\rR\3\16\3\16"+
+		"\3\16\3\16\3\16\7\16Z\n\16\f\16\16\16]\13\16\5\16_\n\16\3\16\2\2\17\2"+
+		"\4\6\b\n\f\16\20\22\24\26\30\32\2\2\2_\2\37\3\2\2\2\4\'\3\2\2\2\6)\3\2"+
+		"\2\2\b-\3\2\2\2\n/\3\2\2\2\f\63\3\2\2\2\16\67\3\2\2\2\20>\3\2\2\2\22@"+
+		"\3\2\2\2\24D\3\2\2\2\26K\3\2\2\2\30N\3\2\2\2\32T\3\2\2\2\34\36\5\4\3\2"+
+		"\35\34\3\2\2\2\36!\3\2\2\2\37\35\3\2\2\2\37 \3\2\2\2 \3\3\2\2\2!\37\3"+
+		"\2\2\2\"(\5\b\5\2#(\5\6\4\2$(\5\24\13\2%(\5\20\t\2&(\5\30\r\2\'\"\3\2"+
+		"\2\2\'#\3\2\2\2\'$\3\2\2\2\'%\3\2\2\2\'&\3\2\2\2(\5\3\2\2\2)*\5\16\b\2"+
+		"*\7\3\2\2\2+.\5\n\6\2,.\5\f\7\2-+\3\2\2\2-,\3\2\2\2.\t\3\2\2\2/\60\7\t"+
+		"\2\2\60\61\7\3\2\2\61\62\7\t\2\2\62\13\3\2\2\2\63\64\7\t\2\2\64\65\7\3"+
+		"\2\2\65\66\5\22\n\2\66\r\3\2\2\2\678\7\t\2\28:\7\4\2\29;\5\32\16\2:9\3"+
+		"\2\2\2:;\3\2\2\2;<\3\2\2\2<=\7\5\2\2=\17\3\2\2\2>?\7\t\2\2?\21\3\2\2\2"+
+		"@A\7\6\2\2AB\5\16\b\2B\23\3\2\2\2CE\7\t\2\2DC\3\2\2\2DE\3\2\2\2EG\3\2"+
+		"\2\2FH\7\7\2\2GF\3\2\2\2GH\3\2\2\2HI\3\2\2\2IJ\5\16\b\2J\25\3\2\2\2KL"+
+		"\7\7\2\2LM\7\t\2\2M\27\3\2\2\2NP\7\t\2\2OQ\5\26\f\2PO\3\2\2\2QR\3\2\2"+
+		"\2RP\3\2\2\2RS\3\2\2\2S\31\3\2\2\2TU\7\t\2\2UV\7\3\2\2V^\7\t\2\2W[\7\b"+
+		"\2\2XZ\5\32\16\2YX\3\2\2\2Z]\3\2\2\2[Y\3\2\2\2[\\\3\2\2\2\\_\3\2\2\2]"+
+		"[\3\2\2\2^W\3\2\2\2^_\3\2\2\2_\33\3\2\2\2\13\37\'-:DGR[^";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

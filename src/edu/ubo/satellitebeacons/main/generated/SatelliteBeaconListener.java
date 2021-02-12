@@ -31,6 +31,16 @@ public interface SatelliteBeaconListener extends ParseTreeListener {
 	 */
 	void exitCommand(SatelliteBeaconParser.CommandContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link SatelliteBeaconParser#globalCallable}.
+	 * @param ctx the parse tree
+	 */
+	void enterGlobalCallable(SatelliteBeaconParser.GlobalCallableContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SatelliteBeaconParser#globalCallable}.
+	 * @param ctx the parse tree
+	 */
+	void exitGlobalCallable(SatelliteBeaconParser.GlobalCallableContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link SatelliteBeaconParser#affectation}.
 	 * @param ctx the parse tree
 	 */

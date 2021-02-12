@@ -43,6 +43,18 @@ public class SatelliteBeaconBaseListener implements SatelliteBeaconListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterGlobalCallable(SatelliteBeaconParser.GlobalCallableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGlobalCallable(SatelliteBeaconParser.GlobalCallableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAffectation(SatelliteBeaconParser.AffectationContext ctx) { }
 	/**
 	 * {@inheritDoc}

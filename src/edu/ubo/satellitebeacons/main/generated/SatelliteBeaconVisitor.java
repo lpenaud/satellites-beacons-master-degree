@@ -26,6 +26,12 @@ public interface SatelliteBeaconVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCommand(SatelliteBeaconParser.CommandContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link SatelliteBeaconParser#globalCallable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGlobalCallable(SatelliteBeaconParser.GlobalCallableContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link SatelliteBeaconParser#affectation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

@@ -1,7 +1,9 @@
 package edu.ubo.satellitebeacons.main.movable.movement;
 
+import edu.ubo.satellitebeacons.main.annotations.ScriptClass;
 import edu.ubo.satellitebeacons.main.movable.Movable;
 
+@ScriptClass("SatelliteMovement")
 public class SimpleHorizontalMovement implements Movement {  
   public SimpleHorizontalMovement(final int min, final int max, final int speed) {
     this.min = min;
