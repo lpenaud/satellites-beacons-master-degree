@@ -1,7 +1,9 @@
 package edu.ubo.satellitebeacons.main.commands.context;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.Collections;
@@ -13,6 +15,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -21,7 +25,6 @@ import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import edu.ubo.satellitebeacons.main.annotations.ScriptClass;
 import edu.ubo.satellitebeacons.main.commands.Command;
-import edu.ubo.satellitebeacons.main.commands.context.ContextParameters.ClassEntry;
 import edu.ubo.satellitebeacons.main.commands.exceptions.TypeException;
 import edu.ubo.satellitebeacons.main.commands.values.MapValue;
 import edu.ubo.satellitebeacons.main.commands.values.NumberValue;
@@ -39,7 +42,6 @@ import edu.ubo.satellitebeacons.main.generated.SatelliteBeaconParser.VariableCon
 import edu.ubo.satellitebeacons.main.movable.Beacon;
 import edu.ubo.satellitebeacons.main.movable.Satellite;
 import edu.ubo.satellitebeacons.main.simulation.Simulation;
-import edu.ubo.satellitebeacons.main.utils.Utils;
 
 public class Context extends SatelliteBeaconBaseVisitor<Object> implements Callable<Void> {
   static class Line {
@@ -64,6 +66,34 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
   public Context() throws Exception {
     this(new ContextParameters() {});
   }
+  
+  public Context(final InputStream in) throws Exception {
+    this(new ContextParameters() {
+      @Override
+      public InputStream getStdin() {
+        return in;
+      }
+      
+      @Override
+      public CharSequence getPrompt() {
+        return "";
+      }
+      
+      @Override
+      public Consumer<Context> getActionBeforeCommand() {
+        return ctx -> {};
+      }
+      
+      @Override
+      public BiConsumer<Context, Value<?>> getActionOnReturn() {
+        return (ctx, v) -> {};
+      }
+    });
+  }
+  
+  public Context(final String filename) throws Exception {
+    this(new FileInputStream(filename));
+  }
 
   public Context(final ContextParameters parameters) throws Exception {
     this.classes = new HashMap<>();
@@ -74,29 +104,33 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
     this.stdout = parameters.getStdout();
     this.stderr = parameters.getStderr();
     this.stdin = new BufferedReader(new InputStreamReader(parameters.getStdin()));
-    this.addClasses(parameters.getClasses());
     this.simulation = parameters.getSimulation();
     this.executor = parameters.getExecutor();
+    this.actionBeforeCommand = parameters.getActionBeforeCommand();
+    this.actionOnAffectation = parameters.getActionOnReturn();
+    this.addClassses(parameters.getClasses());
     parameters.getGlobals().forEach(this::addGlobal);
     this.addGlobal("global", new MapValue("Global", variables));
     this.simulation.open();
     this.addCommand("start", args -> {
       this.executor.submit(this.simulation);
+      this.flagReadLine = false;
       return Value.UNDEFINED;
     });
     this.addCommand("add", args -> {
       Object obj = args.get("s");
       if (obj != null) {
         this.simulation.addSatellite((Satellite) obj);
-        return obj;
+        return new ObjectValue(obj);
       }
       obj = args.get("b");
       if (obj != null) {
         this.simulation.addBeacon((Beacon) obj);
-        return obj;
+        return new ObjectValue(obj);
       }
       return Value.UNDEFINED;
     });
+    this.flagReadLine = true;
   }
 
   public void addCommand(final String name, final Command<?> command) {
@@ -115,6 +149,8 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
       public Value<?> getProperty(String attribute) throws TypeException {
         throw new TypeException(new StringBuilder(name).append(" has no attribute").toString());
       }
+
+
     });
   }
 
@@ -123,13 +159,13 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
     this.reservedWords.add(name);
   }
 
-  public void addClasses(final ClassEntry<Object>[] entries) throws Exception {
-    for (final var entry : entries) {
-      this.addClass(entry.getType(), entry.getContructor());
+  public void addClassses(final Map<Class<?>, Command<Object>> classes) throws Exception {
+    for (final var entry : classes.entrySet()) {
+      this.addClass(entry.getKey(), entry.getValue());
     }
   }
 
-  public <C> void addClass(final Class<C> cl, Command<C> command) throws Exception {
+  public void addClass(final Class<?> cl, Command<Object> command) throws Exception {
     final var anno = cl.getAnnotation(ScriptClass.class);
     if (anno == null) {
       throw new Exception(new StringBuilder(cl.getName()).append(" must have the annotation")
@@ -143,7 +179,7 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
     final SatelliteBeaconParser parser = new SatelliteBeaconParser(null);
     Line line;
     do {
-      this.stdout.print(this.prompt);
+      this.actionBeforeCommand.accept(this);
       line = this.it.next();
       final CharStream stream = CharStreams.fromString(line.content);
       final SatelliteBeaconLexer lexer = new SatelliteBeaconLexer(stream);
@@ -163,7 +199,7 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
       final var name = ctx.WORD().get(0).getText();
       final var value = new NumberValue(Integer.parseInt(ctx.WORD().get(1).getText()));
       this.variables.put(name, value);
-      this.stdout.println(value.pretty());
+      this.actionOnAffectation.accept(this, value);
     } catch (Exception e) {
       this.printException(e);
     }
@@ -181,9 +217,9 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
     }
     final Map<String, Object> argsMap = this.readArgs(callableCtx.args());
     final var name = ctx.WORD().getText();
-    final var value = new ObjectValue(construtor.call(argsMap));
+    final var value = construtor.call(argsMap);
     this.variables.put(name, value);
-    this.stdout.println(value.pretty());
+    this.actionOnAffectation.accept(this, value);
     return super.visitAffectationInstance(ctx);
   }
 
@@ -191,7 +227,7 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
   public Object visitVariable(VariableContext ctx) {
     final var name = ctx.WORD().getText();
     final var value = this.variables.getOrDefault(name, Value.UNDEFINED);
-    this.stdout.println(value.pretty());
+    this.actionOnAffectation.accept(this, value);
     return super.visitVariable(ctx);
   }
 
@@ -220,8 +256,9 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
     final var variable =
         this.variables.getOrDefault(ctx.callable().WORD().getText(), Value.UNDEFINED);
     try {
-      final var result = ((Command<?>) variable.getValue()).call(this.readArgs(ctx.callable().args()));
-      this.stdout.println(Utils.prettyPrint(result));
+      final var result =
+          ((Command<?>) variable.getValue()).call(this.readArgs(ctx.callable().args()));
+      this.actionOnAffectation.accept(this, result);
     } catch (Exception e) {
       this.printException(e);
     }
@@ -258,11 +295,11 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
   }
 
   protected Iterator<Line> lineIterator() {
-    return new Iterator<Context.Line>() {
+    return new Iterator<>() {
 
       @Override
       public boolean hasNext() {
-        return line.content != null;
+        return flagReadLine;
       }
 
       @Override
@@ -293,5 +330,8 @@ public class Context extends SatelliteBeaconBaseVisitor<Object> implements Calla
   protected final Set<String> reservedWords;
   protected final ExecutorService executor;
   protected final Simulation simulation;
+  protected final Consumer<Context> actionBeforeCommand;
+  protected final BiConsumer<Context, Value<?>> actionOnAffectation;
+  protected boolean flagReadLine;
 
 }

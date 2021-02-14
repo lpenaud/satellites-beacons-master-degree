@@ -15,22 +15,24 @@ import edu.ubo.satellitebeacons.main.space.Position;
  */
 @ScriptClass("Beacon")
 public class Beacon extends Movable {
-  
+
   /**
    * Memory of the beacon.
    */
   public class Memory {
-    
+
     /**
      * Create a new memory with the given capacity.
+     * 
      * @param capacity Max capacity of the memory.
      */
     public Memory(final int capacity) {
       this.capacity = capacity;
     }
-    
+
     /**
      * Add things to the memory.
+     * 
      * @param i Size of the things to be added.
      */
     public void add(final int i) {
@@ -40,9 +42,10 @@ public class Beacon extends Movable {
         this.used += i;
       }
     }
-    
+
     /**
      * Remove things to the memory.
+     * 
      * @param i Size of the things to remove.
      * @return Size of removed resources.
      */
@@ -55,24 +58,26 @@ public class Beacon extends Movable {
       this.used -= i;
       return i;
     }
-    
+
     /**
      * Clean the memory by remove everything on it.
      */
     public void clean() {
       this.used = 0;
     }
-    
+
     /**
      * Test if the memory is full.
+     * 
      * @return true if the memory is full otherwise false.
      */
     public boolean isFull() {
       return this.used >= this.capacity;
     }
-    
+
     /**
      * Test if the memory is empty.
+     * 
      * @return true if the memory is empty otherwise false.
      */
     public boolean isEmpty() {
@@ -85,6 +90,7 @@ public class Beacon extends Movable {
 
   /**
    * Create a new beacon with the given position and a communicate port.
+   * 
    * @param position Departure position of the beacon.
    * @param port Communication port with all the satellites.
    */
@@ -97,7 +103,7 @@ public class Beacon extends Movable {
     this.satelliteMessageListener = this::onSatelliteMessage;
     this.reachOldPositionListener = this::onReachOldPosition;
   }
-  
+
   @Override
   public void move() {
     super.move();
@@ -105,28 +111,29 @@ public class Beacon extends Movable {
       this.memory.add(1);
     }
   }
-  
+
   /**
-   * Method if the memory is full.
-   * Stop to read sensors.
-   * Emit a {@linkplain FullCapacityEvent}.
+   * Method if the memory is full. Stop to read sensors. Emit a {@linkplain FullCapacityEvent}.
    */
   public void fullCapacity() {
     this.readSensors = false;
     this.listenerManager.emitEvent(new FullCapacityEvent(this));
   }
-  
+
   /**
    * Reach sea level listener.
+   * 
    * @param event
    */
   public void onReachSeaLevel(final DestinationReachEvent event) {
-    ((DirectionalMovement) event.getSource()).removeEventListener(DestinationReachEvent.class, this.reachOldPositionListener);
+    ((DirectionalMovement) event.getSource()).removeEventListener(DestinationReachEvent.class,
+        this.reachOldPositionListener);
     this.port.addEventListener(MessageEvent.class, this.satelliteMessageListener);
   }
-  
+
   /**
    * Message event from a satellite with the communication port.
+   * 
    * @param event
    */
   protected void onSatelliteMessage(final MessageEvent<Satellite> event) {
@@ -136,36 +143,40 @@ public class Beacon extends Movable {
       event.getContent().receive(this);
     }
   }
-  
+
   /**
    * Reach old position listener.
+   * 
    * @param event
    */
   protected void onReachOldPosition(final DestinationReachEvent event) {
     this.readSensors = true;
-    ((DirectionalMovement) event.getSource()).removeEventListener(DestinationReachEvent.class, this.reachOldPositionListener);
+    ((DirectionalMovement) event.getSource()).removeEventListener(DestinationReachEvent.class,
+        this.reachOldPositionListener);
   }
-  
+
   /**
    * Return the old position listener.
+   * 
    * @return Reach old position listener.
    */
   public Listener<DestinationReachEvent> getReachOldPositionListener() {
     return reachOldPositionListener;
   }
-  
+
   /**
    * Return the reach sea level listener.
+   * 
    * @return Reach sea level listener.
    */
   public Listener<DestinationReachEvent> getReachSeaLevelListener() {
     return reachSeaLevelListener;
   }
-  
+
   protected final Memory memory;
   protected final Port<Satellite> port;
   protected boolean readSensors;
-  
+
   // Listeners
   @SuppressWarnings("rawtypes")
   protected final Listener<MessageEvent> satelliteMessageListener;

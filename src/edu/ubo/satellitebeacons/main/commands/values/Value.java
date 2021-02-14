@@ -1,6 +1,5 @@
 package edu.ubo.satellitebeacons.main.commands.values;
 
-import java.util.function.Function;
 import edu.ubo.satellitebeacons.main.commands.Command;
 import edu.ubo.satellitebeacons.main.commands.exceptions.TypeException;
 

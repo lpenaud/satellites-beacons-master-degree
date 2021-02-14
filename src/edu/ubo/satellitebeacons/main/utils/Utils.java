@@ -100,24 +100,15 @@ public final class Utils {
         StringBuilder::append, (r1, r2) -> r1.append(sep).append(r2), StringBuilder::toString));
   }
   
-  @SafeVarargs
-  public static <T> T getRandom(final T...ts) {
-    return ts[Math.abs(RANDOM.nextInt()) % ts.length];
+  public static int randomInt(final int min, final int max) {
+    return RANDOM.ints(min, max).findAny().getAsInt();
   }
   
-  public static int parseIntOrRandom(final String s, final Integer...intergers) {
+  public static int parseIntOrRandom(final Object o, final int min, final int max) {
     try {
-      return Integer.parseInt(s);
-    } catch (NumberFormatException e) {
-      return getRandom(intergers);
-    }
-  }
-  
-  public static int parseIntOrRandom(final Object o, final Integer...intergers) {
-    try {
-      return parseIntOrRandom(o.toString(), intergers);      
-    } catch (Exception e) {
-      return getRandom(intergers);
+      return Integer.parseInt(o.toString());
+    } catch (NullPointerException | NumberFormatException e) {
+      return randomInt(min, max);
     }
   }
 

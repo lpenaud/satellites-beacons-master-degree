@@ -1,0 +1,21 @@
+s = new Satellite(x = 10, y = 50, min = -100, max = 900, speed = 11)
+s1 = new Satellite(x = 100, y = 10, min = -100, max = 900, speed = 10)
+s3 = new Satellite(x = 400, y = 90, min = -100, max = 900, speed = 11)
+add(s = s)
+add(s = s1)
+add(s = s3)
+
+s = new Satellite()
+add(s = s)
+
+b = new Beacon(x = 400, y = 500, min = 50, max = 750, speed = 10)
+b1 = new Beacon(x = 0, y = 460, min = 0, max = 800, speed = 10)
+b2 = new Beacon(x = 300, y = 400, min = 200, max = 600, speed = 10)
+add(b = b)
+add(b = b1)
+add(b = b2)
+
+b = new Beacon()
+add(b = b)
+
+start()

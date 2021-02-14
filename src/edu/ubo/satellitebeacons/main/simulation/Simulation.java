@@ -46,6 +46,14 @@ public class Simulation implements Runnable {
 
   public void addBeacon(final Beacon b) {
     this.addMovable(b, new GBeacon());
+    try {
+      final StackMovement movement = (StackMovement) b.getMovement();
+      b.addEventListener(FullCapacityEvent.class, movement::onFullCapacity);
+      b.addEventListener(StopSyncEvent.class, movement::onStopSync);
+    } catch (Exception e) {
+      System.err.println(new StringBuilder("Warning the movement of ").append(b)
+          .append(" don't listen FullCapacityEvent and StopSyncEvent"));
+    }
   }
 
   public void addBeacon(final Position p, final StackMovement movement) {

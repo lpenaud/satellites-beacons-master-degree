@@ -24,5 +24,5 @@ properties			: WORD property+;
 // Args
 args 	: WORD '=' WORD (',' args*)?;
 
-WORD	: [a-zA-Z][0-9a-zA-Z]*;
+WORD	: [\-0-9a-zA-Z]+;
 WS   	: [ \t\r\n]+ -> skip ;
